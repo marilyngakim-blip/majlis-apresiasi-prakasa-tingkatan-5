@@ -918,20 +918,17 @@ async function checkin(id, fromScan){
   try {
     const r = await api('attendance', { id });
     Object.assign(m, r.record);
-    // Kiraan ibu bapa hanya ikut yang benar-benar datang hari ini, bukan senarai pendaftaran.
+    // Ibu bapa dikira hadir mengikut senarai berdaftar. AJK hanya ubah jika murid
+    // memaklumkan ada ibu / bapa yang tidak dapat hadir.
     if (!r.already){
-      let n = 0;
-      if (!fromScan && parentsOf(m).length){
-        const ans = prompt(`${m.nama} hadir.\n\nBerapa ibu bapa / penjaga yang hadir bersama hari ini?\nBerdaftar: ${parentsOf(m).map(p => p.nama).join(', ')}`, '0');
-        n = Math.max(0, Math.min(10, parseInt(ans, 10) || 0));
-      }
+      const n = parentsOf(m).length;
       if (bilIB(m) !== n){ await api('update', { record: { id, bilIbuBapa: String(n) } }); m.bilIbuBapa = String(n); }
     }
     renderAll();
     const res = r.already
       ? { type:'warn', msg:`${m.nama} sudah direkod hadir${m.masaHadir ? ' (' + m.masaHadir + ')' : ''}`, id }
       : { type:'ok', msg:`✔ ${m.nama} — HADIR${m.meja ? ' · Meja ' + m.meja : ''}${m.kerusi ? ' · Kerusi ' + m.kerusi : ''}`, id };
-    if (!fromScan) toast(res.msg);
+    if (!fromScan) toast(res.msg + (res.type === 'ok' ? ` · 👪 ${bilIB(m)} ibu bapa (ubah di tab Ibu Bapa jika perlu)` : ''));
     return res;
   } catch(err){ if (!fromScan) alert(err.message); return { type:'err', msg:err.message }; }
 }
@@ -1024,9 +1021,10 @@ function showScanResult(res, sound){
   el.innerHTML = esc(res.msg);
   if (res.id && res.type !== 'err'){
     const mm = murid.find(m => m.id === res.id) || {};
-    const n = bilIB(mm);
-    if (parentsOf(mm).length) el.innerHTML += `<div style="margin-top:8px;text-align:left;font-weight:600;color:var(--ink)"><div class="note">Ibu bapa / penjaga berdaftar:</div>${parentsHtml(mm)}</div>`;
-    el.innerHTML += `<div class="note" style="margin-top:8px">Tekan bilangan ibu bapa / penjaga yang <b>benar-benar hadir hari ini</b>:</div><div class="famset">` +
+    const n = bilIB(mm), reg = parentsOf(mm).length;
+    if (reg) el.innerHTML += `<div style="margin-top:8px;text-align:left;font-weight:600;color:var(--ink)"><div class="note">Ibu bapa / penjaga (ikut senarai):</div>${parentsHtml(mm)}</div>`;
+    el.innerHTML += `<div style="margin-top:8px;font-weight:800;color:var(--sage-d)">👪 ${n} ibu bapa direkod hadir${reg && n === reg ? ' (ikut senarai)' : ''}</div>`;
+    el.innerHTML += `<div class="note" style="margin-top:4px">Tukar <b>hanya jika</b> murid maklumkan ada ibu / bapa yang tidak dapat hadir:</div><div class="famset">` +
       [0,1,2,3,4].map(k => `<button type="button" class="btn btn-sm ${k === n ? 'btn-sage' : 'btn-line'}" onclick="setParents('${esc(res.id)}',${k})">${k}</button>`).join('') + '</div>';
   }
   if (sound) beep(res.type === 'ok');
