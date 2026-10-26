@@ -885,8 +885,12 @@ async function seedData(){
   } catch(err){ alert(err.message); }
 }
 async function resetAll(){
-  if (!confirm('Set semula kehadiran SEMUA murid kepada “Belum hadir”?')) return;
-  try { await api('resetAll'); toast('Semua kehadiran diset semula'); await loadData(); } catch(err){ alert(err.message); }
+  if (!confirm('Set semula kehadiran SEMUA murid kepada “Belum hadir” dan bilangan ibu bapa hadir kepada 0?\n\nNama ibu bapa berdaftar tidak dipadam.')) return;
+  try {
+    await api('resetAll');
+    await api('bulkAdd', { records: murid.map(m => ({ nama: m.nama, kelas: m.kelas, bilIbuBapa: '0' })) });
+    toast('Semua kehadiran diset semula'); await loadData();
+  } catch(err){ alert(err.message); }
 }
 async function delVisitor(id){
   if (!confirm('Padam rekod tetamu ini?')) return;
@@ -899,7 +903,17 @@ async function checkin(id, fromScan){
   if (!m) return { type:'err', msg:'Murid tidak dijumpai' };
   try {
     const r = await api('attendance', { id });
-    Object.assign(m, r.record); renderAll();
+    Object.assign(m, r.record);
+    // Kiraan ibu bapa hanya ikut yang benar-benar datang hari ini, bukan senarai pendaftaran.
+    if (!r.already){
+      let n = 0;
+      if (!fromScan && parentsOf(m).length){
+        const ans = prompt(`${m.nama} hadir.\n\nBerapa ibu bapa / penjaga yang hadir bersama hari ini?\nBerdaftar: ${parentsOf(m).map(p => p.nama).join(', ')}`, '0');
+        n = Math.max(0, Math.min(10, parseInt(ans, 10) || 0));
+      }
+      if (bilIB(m) !== n){ await api('update', { record: { id, bilIbuBapa: String(n) } }); m.bilIbuBapa = String(n); }
+    }
+    renderAll();
     const res = r.already
       ? { type:'warn', msg:`${m.nama} sudah direkod hadir${m.masaHadir ? ' (' + m.masaHadir + ')' : ''}`, id }
       : { type:'ok', msg:`✔ ${m.nama} — HADIR${m.meja ? ' · Meja ' + m.meja : ''}${m.kerusi ? ' · Kerusi ' + m.kerusi : ''}`, id };
@@ -998,7 +1012,7 @@ function showScanResult(res, sound){
     const mm = murid.find(m => m.id === res.id) || {};
     const n = bilIB(mm);
     if (parentsOf(mm).length) el.innerHTML += `<div style="margin-top:8px;text-align:left;font-weight:600;color:var(--ink)"><div class="note">Ibu bapa / penjaga berdaftar:</div>${parentsHtml(mm)}</div>`;
-    el.innerHTML += `<div class="note" style="margin-top:8px">Bilangan ibu bapa / penjaga yang hadir bersama:</div><div class="famset">` +
+    el.innerHTML += `<div class="note" style="margin-top:8px">Tekan bilangan ibu bapa / penjaga yang <b>benar-benar hadir hari ini</b>:</div><div class="famset">` +
       [0,1,2,3,4].map(k => `<button type="button" class="btn btn-sm ${k === n ? 'btn-sage' : 'btn-line'}" onclick="setParents('${esc(res.id)}',${k})">${k}</button>`).join('') + '</div>';
   }
   if (sound) beep(res.type === 'ok');
