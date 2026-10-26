@@ -45,7 +45,7 @@ Buka `index.html`, cari blok `CONFIG` di bahagian atas dan isi:
 ```js
 API_URL: 'https://script.google.com/macros/s/XXXX/exec',
 TARIKH: '30 Oktober 2026 (Jumaat)',
-TEMPAT: 'Dewan Terbuka SMK Langkon',
+TEMPAT: 'Dewan AQ Kota Marudu',
 LOGO_URL: 'https://...logo-sekolah.png',
 PELAN_URL: 'https://...pelan-tempat-duduk.png',
 BUKU_URL: 'https://anyflip.com/...',
