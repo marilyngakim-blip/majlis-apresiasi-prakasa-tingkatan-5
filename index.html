@@ -158,6 +158,10 @@ body.is-admin .admin-only.adminbar{display:flex!important}
 .tag.seat{background:var(--blush2);color:var(--rose-d)}
 .tag.fam{background:var(--sage-l);color:var(--sage-d)}
 .card .actions{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+.plist{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.pname{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:.9rem;font-weight:700;color:var(--ink)}
+.prole{font-size:.72rem;font-weight:800;border-radius:999px;padding:2px 8px;background:var(--sage-l);color:var(--sage-d)}
+.prole.ibu{background:var(--blush2);color:var(--rose-d)}
 .parents{font-size:.78rem;color:var(--sage-d);background:var(--sage-l);border-radius:10px;padding:6px 8px;margin-top:8px;text-align:left;white-space:pre-line}
 .empty{text-align:center;color:var(--muted);padding:36px 12px;border:1px dashed var(--line);border-radius:18px;background:#fff}
 
@@ -173,7 +177,7 @@ body.is-admin .admin-only.adminbar{display:flex!important}
 
 /* Senarai kehadiran */
 .row{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:16px;margin-bottom:8px}
-.row .no{color:var(--muted);font-weight:700;text-align:center;font-size:.85rem}
+.row > .no{color:var(--muted);font-weight:700;text-align:center;font-size:.85rem}
 .row .nm{font-weight:800}
 .row .sub{font-size:.82rem;color:var(--muted)}
 .row .right{display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
@@ -222,7 +226,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
   .stat:nth-child(n+3){border-top:1px dashed var(--line)}
   .form-grid{grid-template-columns:1fr}
   .row{grid-template-columns:1fr}
-  .row .no{display:none}
+  .row > .no{display:none}
   .row .right{justify-content:flex-start}
   .hero{padding-top:84px}
 }
@@ -322,6 +326,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
     <button class="tab" data-tab="kehadiran">✅ Rekod Kehadiran</button>
     <button class="tab" data-tab="tetamu">📝 Daftar Tetamu</button>
     <button class="tab" data-tab="tentatif">🗓️ Tentatif</button>
+    <button class="tab" data-tab="ibubapa">👪 Ibu Bapa</button>
     <button class="tab" data-tab="pelan">🪑 Tempat Duduk</button>
   </div>
 </nav>
@@ -395,6 +400,21 @@ footer small{display:block;color:var(--muted);margin-top:4px}
     <div id="bukuBox" class="hidden" style="text-align:center;margin-top:16px"><a class="btn btn-rose" id="bukuLink" target="_blank" rel="noopener">📖 Buka Buku Atur Cara</a></div>
   </section>
 
+  <!-- IBU BAPA -->
+  <section class="page hidden" id="tab-ibubapa">
+    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Senarai Ibu Bapa / Penjaga</h2><p>Ibu bapa dan penjaga yang berdaftar mengikut murid.</p></div>
+    <div class="summary" id="ibSummary"></div>
+    <div id="ibLocked" class="empty">🔒 Senarai nama ibu bapa hanya dipaparkan kepada AJK. Tekan <b>Admin</b> di bahagian atas untuk log masuk.</div>
+    <div class="admin-only">
+      <div class="adminbar"><button class="btn btn-line btn-sm" onclick="exportParents()">⬇️ CSV Ibu Bapa</button></div>
+      <div class="chips" id="ibKelasChips"></div>
+      <div class="chips" id="ibStatusChips"></div>
+      <div class="searchbox"><input id="qIb" type="search" placeholder="Cari nama ibu bapa atau murid..." oninput="renderParents()"></div>
+      <p class="count-line" id="ibNote"></p>
+      <div id="ibList"></div>
+    </div>
+  </section>
+
   <!-- PELAN -->
   <section class="page hidden" id="tab-pelan">
     <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Pelan Tempat Duduk</h2><p>Cari nama anda di tab “Cari Murid” untuk melihat nombor meja dan kerusi.</p></div>
@@ -434,7 +454,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
         <div><label for="mKerusi">Kerusi</label><input id="mKerusi" maxlength="20"></div>
         <div><label for="mBil">Bil. ibu bapa hadir</label><input id="mBil" type="number" min="0" max="10"></div>
         <div><label for="mGambar">URL gambar</label><input id="mGambar" type="url" maxlength="300" placeholder="https://..."></div>
-        <div class="full"><label for="mIbuBapa">Nama ibu bapa / penjaga</label><textarea id="mIbuBapa" rows="2" maxlength="400"></textarea></div>
+        <div class="full"><label for="mIbuBapa">Nama ibu bapa / penjaga</label><textarea id="mIbuBapa" rows="3" maxlength="400" placeholder="NAMA BAPA (Bapa/Penjaga 1); NAMA IBU (Ibu/Penjaga 2)"></textarea></div>
       </div>
       <div style="display:flex;gap:10px;margin-top:18px">
         <button type="button" class="btn btn-line" style="flex:1" onclick="closeModal('muridModal')">Batal</button>
@@ -516,6 +536,18 @@ function nowStr(){ const d=new Date(), p=n=>String(n).padStart(2,'0'); return `$
 function byKelasNama(a,b){ return String(a.kelas).localeCompare(String(b.kelas)) || String(a.nama).localeCompare(String(b.nama)); }
 function hadir(m){ return m.status === 'Hadir'; }
 function bilIB(m){ return parseInt(m.bilIbuBapa, 10) || 0; }
+// "NAMA (Bapa/Penjaga 1); NAMA (Ibu/Penjaga 2)" -> [{nama, peranan}]
+function parentsOf(m){
+  return String(m.ibuBapa || '').split(/[;\n]+/).map(x => x.trim()).filter(Boolean).map(x => {
+    const r = x.match(/^(.*?)\s*\(((?:Bapa|Ibu|Penjaga)[^()]*)\)\s*$/i);
+    return r ? { nama: r[1].trim(), peranan: r[2].trim() } : { nama: x, peranan: '' };
+  });
+}
+function parentsHtml(m){
+  const ps = parentsOf(m);
+  if (!ps.length) return '';
+  return '<div class="plist">' + ps.map(p => `<div class="pname">${esc(p.nama)}${p.peranan ? `<span class="prole ${/^ibu/i.test(p.peranan) ? 'ibu' : ''}">${esc(p.peranan)}</span>` : ''}</div>`).join('') + '</div>';
+}
 function isAdmin(){ return !!adminPass; }
 function kelasList(){ return [...new Set(murid.map(m => m.kelas).filter(Boolean))].sort(); }
 function avatarFail(img){ const d=document.createElement('div'); d.className=img.className; d.textContent=img.dataset.i; img.replaceWith(d); }
@@ -642,7 +674,7 @@ function renderAll(){
   $('muridNames').innerHTML = murid.map(m => `<option value="${esc(m.nama)}">`).join('');
   $('kelasList').innerHTML = kl.map(k => `<option value="${esc(k)}">`).join('');
   $('seedBtn').classList.toggle('hidden', !(window.DATA_MURID && murid.length === 0));
-  renderMurid(); renderAtt();
+  renderMurid(); renderAtt(); renderParents();
 }
 
 function filtered(q, kelas){
@@ -663,7 +695,7 @@ function renderMurid(){
     const seat = (m.meja || m.kerusi) ? `<span class="tag seat">🪑 ${[m.meja && 'Meja ' + esc(m.meja), m.kerusi && 'Kerusi ' + esc(m.kerusi)].filter(Boolean).join(' · ')}</span>` : '';
     const st = hadir(m) ? `<span class="tag ok">✔ Hadir${m.masaHadir ? ' ' + esc(String(m.masaHadir).split(' ')[1] || '') : ''}</span>` : '<span class="tag no">Belum hadir</span>';
     const fam = bilIB(m) ? `<span class="tag fam">👪 ${bilIB(m)} ibu bapa</span>` : '';
-    const par = isAdmin() && m.ibuBapa ? `<div class="parents">${esc(m.ibuBapa)}</div>` : '';
+    const par = isAdmin() && m.ibuBapa ? `<div class="parents">👪 Ibu bapa / penjaga:${parentsHtml(m)}</div>` : '';
     const adm = isAdmin() ? `
       <button class="btn btn-line btn-sm" onclick="openMuridForm('${esc(m.id)}')" title="Kemas kini">✏️</button>
       ${hadir(m) ? '' : `<button class="btn btn-sage btn-sm" onclick="checkin('${esc(m.id)}')">✔ Hadir</button>`}
@@ -700,12 +732,44 @@ function renderAtt(){
   $('attList').innerHTML = list.length ? list.map((m, i) => `
     <div class="row">
       <div class="no">${i + 1}</div>
-      <div><div class="nm">${esc(m.nama)}</div><div class="sub">${esc(m.kelas || '—')}${m.jantina ? ' · ' + esc(m.jantina) : ''}${bilIB(m) ? ' · 👪 ' + bilIB(m) + ' ibu bapa' : ''}</div></div>
+      <div><div class="nm">${esc(m.nama)}</div><div class="sub">${esc(m.kelas || '—')}${m.jantina ? ' · ' + esc(m.jantina) : ''}${bilIB(m) ? ' · 👪 ' + bilIB(m) + ' ibu bapa' : ''}</div>${isAdmin() ? parentsHtml(m) : ''}</div>
       <div class="right">${hadir(m) ? `<span class="tag ok">✔ ${esc(m.masaHadir || 'Hadir')}</span>` : '<span class="tag no">Belum hadir</span>'}
         ${isAdmin() ? (hadir(m)
           ? `<button class="btn btn-line btn-sm" onclick="resetAtt('${esc(m.id)}')">↺ Batal</button>`
           : `<button class="btn btn-sage btn-sm" onclick="checkin('${esc(m.id)}')">✔ Hadir</button>`) : ''}
       </div>
+    </div>`).join('') : '<div class="empty">Tiada rekod.</div>';
+}
+
+let ibKelas = '', ibStatus = '';
+function renderParents(){
+  // Ringkasan (boleh dilihat semua)
+  const rows = kelasList().map(k => {
+    const all = murid.filter(m => m.kelas === k);
+    return { k, murid: all.length, ada: all.filter(m => parentsOf(m).length).length, nama: all.reduce((t, m) => t + parentsOf(m).length, 0), hadir: all.filter(hadir).reduce((t, m) => t + bilIB(m), 0) };
+  });
+  const T = rows.reduce((t, r) => ({ murid:t.murid+r.murid, ada:t.ada+r.ada, nama:t.nama+r.nama, hadir:t.hadir+r.hadir }), { murid:0, ada:0, nama:0, hadir:0 });
+  // Orang awam tidak menerima nama ibu bapa, jadi hanya lajur kehadiran dipaparkan.
+  const full = isAdmin();
+  const tr = (r, c) => `<tr class="${c||''}"><td>${esc(r.k)}</td><td>${r.murid}</td>${full ? `<td>${r.ada}</td><td>${r.nama}</td>` : ''}<td style="color:var(--ok)">${r.hadir}</td></tr>`;
+  $('ibSummary').innerHTML = rows.length ? `<table style="${full ? '' : 'min-width:0'}"><thead><tr><th>Kelas</th><th>Murid</th>${full ? '<th>Murid Ada Ibu Bapa Berdaftar</th><th>Ibu Bapa Berdaftar</th>' : ''}<th>Ibu Bapa Hadir</th></tr></thead><tbody>${rows.map(r => tr(r)).join('')}${tr(Object.assign({ k:'JUMLAH' }, T), 'total')}</tbody></table>` : '<p class="note" style="text-align:center">Tiada data.</p>';
+  $('ibLocked').classList.toggle('hidden', isAdmin());
+  if (!isAdmin()) return;
+  renderChips('ibKelasChips', kelasList(), ibKelas, v => { ibKelas = v; renderParents(); }, 'Semua kelas');
+  renderChips('ibStatusChips', ['Ada ibu bapa', 'Tiada ibu bapa'], ibStatus, v => { ibStatus = v; renderParents(); }, 'Semua murid');
+  const q = $('qIb').value.trim().toLowerCase();
+  let list = murid.filter(m => !ibKelas || m.kelas === ibKelas).sort(byKelasNama);
+  if (ibStatus === 'Ada ibu bapa') list = list.filter(m => parentsOf(m).length);
+  if (ibStatus === 'Tiada ibu bapa') list = list.filter(m => !parentsOf(m).length);
+  if (q) list = list.filter(m => m.nama.toLowerCase().includes(q) || String(m.ibuBapa || '').toLowerCase().includes(q));
+  $('ibNote').textContent = `${list.length} murid · ${list.reduce((t, m) => t + parentsOf(m).length, 0)} nama ibu bapa`;
+  $('ibList').innerHTML = list.length ? list.map((m, i) => `
+    <div class="row">
+      <div class="no">${i + 1}</div>
+      <div><div class="nm">${esc(m.nama)}</div><div class="sub">${esc(m.kelas || '—')}</div>
+        ${parentsHtml(m) || '<div class="sub" style="margin-top:4px">Tiada ibu bapa berdaftar</div>'}</div>
+      <div class="right">${hadir(m) ? `<span class="tag ok">✔ Murid hadir</span>` : '<span class="tag no">Belum hadir</span>'}${bilIB(m) ? `<span class="tag fam">👪 ${bilIB(m)}</span>` : ''}
+        <button class="btn btn-line btn-sm" onclick="openMuridForm('${esc(m.id)}')">✏️ Ubah</button></div>
     </div>`).join('') : '<div class="empty">Tiada rekod.</div>';
 }
 
@@ -931,7 +995,9 @@ function showScanResult(res, sound){
   el.className = 'result ' + res.type;
   el.innerHTML = esc(res.msg);
   if (res.id && res.type !== 'err'){
-    const n = bilIB(murid.find(m => m.id === res.id) || {});
+    const mm = murid.find(m => m.id === res.id) || {};
+    const n = bilIB(mm);
+    if (parentsOf(mm).length) el.innerHTML += `<div style="margin-top:8px;text-align:left;font-weight:600;color:var(--ink)"><div class="note">Ibu bapa / penjaga berdaftar:</div>${parentsHtml(mm)}</div>`;
     el.innerHTML += `<div class="note" style="margin-top:8px">Bilangan ibu bapa / penjaga yang hadir bersama:</div><div class="famset">` +
       [0,1,2,3,4].map(k => `<button type="button" class="btn btn-sm ${k === n ? 'btn-sage' : 'btn-line'}" onclick="setParents('${esc(res.id)}',${k})">${k}</button>`).join('') + '</div>';
   }
@@ -978,6 +1044,12 @@ function downloadCSV(name, rows){
 function exportAttendance(){
   downloadCSV(`kehadiran-prakasa-${CONFIG.TAHUN}.csv`, [['Bil','Kelas','Nama Murid','L/P','Status','Masa Hadir','Bil. Ibu Bapa Hadir','Ibu Bapa / Penjaga','Meja','Kerusi','ID']]
     .concat(murid.slice().sort(byKelasNama).map((m, i) => [i + 1, m.kelas, m.nama, m.jantina, hadir(m) ? 'Hadir' : 'Tidak hadir', m.masaHadir, bilIB(m), m.ibuBapa || '', m.meja, m.kerusi, m.id])));
+}
+function exportParents(){
+  const rows = [['Bil','Kelas','Nama Murid','Status Murid','Nama Ibu Bapa / Penjaga','Peranan','Bil. Ibu Bapa Hadir']];
+  let i = 0;
+  murid.slice().sort(byKelasNama).forEach(m => parentsOf(m).forEach(p => rows.push([++i, m.kelas, m.nama, hadir(m) ? 'Hadir' : 'Belum hadir', p.nama, p.peranan, bilIB(m)])));
+  downloadCSV(`ibu-bapa-prakasa-${CONFIG.TAHUN}.csv`, rows);
 }
 function exportVisitors(){
   downloadCSV(`tetamu-prakasa-${CONFIG.TAHUN}.csv`, [['Bil','Masa','Nama','Telefon','Hubungan','Murid','Bilangan']]

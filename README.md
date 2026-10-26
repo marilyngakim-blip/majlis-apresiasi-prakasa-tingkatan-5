@@ -6,7 +6,8 @@ Laman web satu halaman untuk Majlis Apresiasi PRAKASA Murid Tingkatan 5 SMK Lang
 - **Daftar Tetamu** — ibu bapa / tetamu isi borang semasa tiba (nama, telefon, hubungan, nama murid, bilangan orang).
 - **Tentatif** majlis, **Pelan Tempat Duduk**, pautan **Buku Atur Cara** (pilihan).
 - **Rekod Kehadiran** — jadual analisis ikut kelas (enrolmen, hadir, % hadir, ibu bapa hadir, jumlah), dikemas kini setiap 20 saat.
-- **Imbas QR** — selepas imbas, admin boleh tekan bilangan ibu bapa yang datang bersama (0–4).
+- **Imbas QR** — selepas imbas, nama ibu bapa berdaftar dipaparkan dan admin tekan bilangan yang datang bersama (0–4).
+- **Ibu Bapa** — senarai ibu bapa / penjaga mengikut murid (nama hanya untuk admin), carian dan CSV.
 - **Panel Admin** — tambah/edit/padam murid, import senarai sekali gus, tanda hadir, **imbas QR dengan kamera telefon** (ada bunyi bip), cetak kad QR, muat turun CSV kehadiran & tetamu.
 
 Data disimpan dalam **Google Sheets** melalui Google Apps Script (percuma).
