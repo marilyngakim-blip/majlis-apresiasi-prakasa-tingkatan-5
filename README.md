@@ -2,6 +2,8 @@
 
 Laman web satu halaman untuk Majlis Apresiasi PRAKASA Murid Tingkatan 5 SMK Langkon:
 
+🌸 **Laman:** https://smklangkon.github.io/prakasa2026/
+
 - **Cari Murid** — cari nama, lihat kelas, meja/kerusi dan **kod QR kehadiran** setiap murid.
 - **Daftar Tetamu** — ibu bapa / tetamu isi borang semasa tiba (nama, telefon, hubungan, nama murid, bilangan orang).
 - **Tentatif** majlis, **Pelan Tempat Duduk**, pautan **Buku Atur Cara** (pilihan).
@@ -54,7 +56,7 @@ Selagi `API_URL` kosong, laman berjalan dalam **Mod Demo** (data contoh, disimpa
 
 ### 3. Terbitkan di GitHub Pages
 Repo → **Settings → Pages** → Source: *Deploy from a branch* → pilih branch dan folder `/ (root)` → Save.
-Laman akan berada di `https://marilyngakim-blip.github.io/<nama-repo>/`.
+Laman: **https://smklangkon.github.io/prakasa2026/**
 
 ## Cara guna pada hari majlis
 
