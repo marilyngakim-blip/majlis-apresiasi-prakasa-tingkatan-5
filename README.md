@@ -30,7 +30,7 @@ Data disimpan dalam **Google Sheets** melalui Google Apps Script (percuma).
 2. **Extensions → Apps Script**. Padam kod sedia ada, tampal semua isi `Code.gs`, tekan **Save**.
 3. Pilih fungsi **`setup`** di bar atas → **Run** → benarkan akses (Advanced → Go to project).
    Helaian `Murid` dan `Pengunjung` akan dicipta.
-4. **Tukar kata laluan admin** (lalai: `prakasa2026`): dalam fungsi `tukarKataLaluan`, ganti
+4. **Tetapkan kata laluan admin**: dalam fungsi `tukarKataLaluan`, ganti
    `TUKAR_KATA_LALUAN_INI` dengan kata laluan baharu, kemudian **Run** fungsi itu sekali.
 5. **Deploy → New deployment** → jenis **Web app**
    - Execute as: **Me**
@@ -52,7 +52,7 @@ BUKU_URL: 'https://anyflip.com/...',
 ATUR_CARA: [ ... ]   // ubah ikut tentatif sebenar
 ```
 
-Selagi `API_URL` kosong, laman berjalan dalam **Mod Demo** (data contoh, disimpan dalam pelayar sahaja; kata laluan demo `prakasa2026`).
+Selagi `API_URL` kosong, laman berjalan dalam **Mod Demo** (data contoh, disimpan dalam pelayar sahaja; kata laluan demo `demo`).
 
 ### 3. Terbitkan di GitHub Pages
 Repo → **Settings → Pages** → Source: *Deploy from a branch* → pilih branch dan folder `/ (root)` → Save.

@@ -22,7 +22,8 @@ const VIS_HEADERS = ['id', 'masa', 'nama', 'telefon', 'hubungan', 'murid', 'bila
 const EDITABLE = ['nama', 'kelas', 'jantina', 'meja', 'kerusi', 'gambar', 'bilIbuBapa', 'ibuBapa'];
 const PRIVATE_FIELDS = ['ibuBapa']; // tidak dipaparkan kepada orang awam
 const TZ = 'Asia/Kuching';
-const DEFAULT_PASSWORD = 'prakasa2026';
+// Tiada kata laluan lalai dalam kod awam. `setup` menjana kata laluan rawak (lihat Execution log);
+// tukar kepada kata laluan sendiri dengan `tukarKataLaluan`.
 
 /** Jalankan sekali untuk cipta helaian dan kata laluan lalai. */
 function setup() {
@@ -35,7 +36,11 @@ function setup() {
   getSheet_(SHEET_MURID, MURID_HEADERS).setFrozenRows(1);
   getSheet_(SHEET_VIS, VIS_HEADERS);
   const props = PropertiesService.getScriptProperties();
-  if (!props.getProperty('ADMIN_PASSWORD')) props.setProperty('ADMIN_PASSWORD', DEFAULT_PASSWORD);
+  if (!props.getProperty('ADMIN_PASSWORD')) {
+    const pw = Utilities.getUuid().slice(0, 8);
+    props.setProperty('ADMIN_PASSWORD', pw);
+    Logger.log('Kata laluan admin sementara: ' + pw + ' (tukar dengan fungsi tukarKataLaluan)');
+  }
 }
 
 /** Tukar teks di bawah, kemudian jalankan fungsi ini sekali. */
@@ -265,8 +270,8 @@ function deleteRow_(name, headers, id) {
 // ---------- Utiliti ----------
 
 function isAdmin_(pw) {
-  const saved = PropertiesService.getScriptProperties().getProperty('ADMIN_PASSWORD') || DEFAULT_PASSWORD;
-  return typeof pw === 'string' && pw === saved;
+  const saved = PropertiesService.getScriptProperties().getProperty('ADMIN_PASSWORD');
+  return !!saved && typeof pw === 'string' && pw === saved;
 }
 
 function toObj_(headers, row) {
