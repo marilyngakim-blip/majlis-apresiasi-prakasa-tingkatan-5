@@ -426,7 +426,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
       <button class="btn btn-line btn-sm hidden" id="seedGuruBtn" onclick="seedGuru()">🌱 Masukkan senarai guru</button>
     </div>
     <div class="chips" id="guruStatusChips"></div>
-    <div class="searchbox"><input id="qGuru" type="search" placeholder="Cari nama atau jawatan guru..." oninput="renderGuru()"></div>
+    <div class="searchbox"><input id="qGuru" type="search" placeholder="Cari nama guru..." oninput="renderGuru()"></div>
     <p class="count-line" id="guruNote"></p>
     <div id="guruList"></div>
   </section>
@@ -567,8 +567,6 @@ function nowStr(){ const d=new Date(), p=n=>String(n).padStart(2,'0'); return `$
 function byKelasNama(a,b){ return String(a.kelas).localeCompare(String(b.kelas)) || String(a.nama).localeCompare(String(b.nama)); }
 function hadir(m){ return m.status === 'Hadir'; }
 function isGuru(m){ return String(m.kelas || '').trim().toUpperCase() === 'GURU'; }
-const JAWATAN = Object.fromEntries((window.DATA_GURU || []).map(g => [g.nama.toUpperCase(), g.jawatan]));
-function jawatanOf(m){ return JAWATAN[String(m.nama || '').toUpperCase()] || 'Guru'; }
 function byId(id){ return semua.find(x => x.id === String(id)); }
 function bilIB(m){ return parseInt(m.bilIbuBapa, 10) || 0; }
 // "NAMA (Bapa/Penjaga 1); NAMA (Ibu/Penjaga 2)" -> [{nama, peranan}]
@@ -819,7 +817,7 @@ function guruFiltered(){
   let list = guru.slice().sort((a, b) => a.nama.localeCompare(b.nama));
   if (guruStatus === 'Hadir') list = list.filter(hadir);
   if (guruStatus === 'Belum hadir') list = list.filter(m => !hadir(m));
-  if (q) list = list.filter(m => m.nama.toLowerCase().includes(q) || jawatanOf(m).toLowerCase().includes(q));
+  if (q) list = list.filter(m => m.nama.toLowerCase().includes(q));
   return list;
 }
 function renderGuru(){
@@ -835,7 +833,7 @@ function renderGuru(){
   $('guruList').innerHTML = list.length ? list.map((m, i) => `
     <div class="row">
       <div class="no">${i + 1}</div>
-      <div><div class="nm">${esc(m.nama)}</div><div class="sub">${esc(jawatanOf(m))}${m.jantina ? ' · ' + esc(m.jantina) : ''}</div></div>
+      <div><div class="nm">${esc(m.nama)}</div></div>
       <div class="right">${hadir(m) ? `<span class="tag ok">✔ ${esc(m.masaHadir || 'Hadir')}</span>` : '<span class="tag no">Belum hadir</span>'}
         <button class="btn btn-line btn-sm" onclick="showQR('${esc(m.id)}')">▦ QR</button>
         ${isAdmin() ? (hadir(m)
@@ -845,8 +843,8 @@ function renderGuru(){
     </div>`).join('') : `<div class="empty">${guru.length ? 'Tiada padanan.' : 'Senarai guru belum dimasukkan.'}</div>`;
 }
 function exportGuru(){
-  downloadCSV(`kehadiran-guru-prakasa-${CONFIG.TAHUN}.csv`, [['Bil','Nama','Jawatan','L/P','Status','Masa Hadir','ID']]
-    .concat(guru.slice().sort((a, b) => a.nama.localeCompare(b.nama)).map((m, i) => [i + 1, m.nama, jawatanOf(m), m.jantina, hadir(m) ? 'Hadir' : 'Belum hadir', m.masaHadir, m.id])));
+  downloadCSV(`kehadiran-guru-prakasa-${CONFIG.TAHUN}.csv`, [['Bil','Nama','Status','Masa Hadir','ID']]
+    .concat(guru.slice().sort((a, b) => a.nama.localeCompare(b.nama)).map((m, i) => [i + 1, m.nama, hadir(m) ? 'Hadir' : 'Belum hadir', m.masaHadir, m.id])));
 }
 async function seedGuru(){
   if (!confirm(`Masukkan ${window.DATA_GURU.length} guru ke dalam sistem?`)) return;
@@ -994,7 +992,7 @@ async function checkin(id, fromScan){
     renderAll();
     const res = r.already
       ? { type:'warn', msg:`${m.nama} sudah direkod hadir${m.masaHadir ? ' (' + m.masaHadir + ')' : ''}`, id }
-      : isGuru(m) ? { type:'ok', msg:`✔ ${m.nama} (${jawatanOf(m)}) — HADIR`, id, guru:true }
+      : isGuru(m) ? { type:'ok', msg:`✔ ${m.nama} (Guru) — HADIR`, id, guru:true }
       : { type:'ok', msg:`✔ ${m.nama} — HADIR${m.meja ? ' · Meja ' + m.meja : ''}${m.kerusi ? ' · Kerusi ' + m.kerusi : ''}`, id };
     if (!fromScan) toast(res.msg + (res.type === 'ok' && !isGuru(m) ? ` · 👪 ${bilIB(m)} ibu bapa (ubah di tab Ibu Bapa jika perlu)` : ''));
     return res;
@@ -1018,7 +1016,7 @@ function showQR(id){
   currentQR = m;
   QRCode.toCanvas($('qrCanvasBig'), qrText(m.id), { width:230, margin:1, color:{ dark:'#3c2a2f', light:'#ffffff' } }, err => { if (err) toast('Gagal menjana QR'); });
   $('qrName').textContent = m.nama;
-  $('qrInfo').textContent = [isGuru(m) ? jawatanOf(m) : m.kelas, m.meja && 'Meja ' + m.meja, m.kerusi && 'Kerusi ' + m.kerusi, 'ID ' + m.id].filter(Boolean).join(' · ');
+  $('qrInfo').textContent = [isGuru(m) ? 'Guru' : m.kelas, m.meja && 'Meja ' + m.meja, m.kerusi && 'Kerusi ' + m.kerusi, 'ID ' + m.id].filter(Boolean).join(' · ');
   openModal('qrModal');
 }
 function downloadQR(){
@@ -1033,7 +1031,7 @@ async function printQR(list, label){
   if (!list.length) return alert('Tiada nama untuk dicetak.');
   const cards = await Promise.all(list.map(async m => {
     const url = await QRCode.toDataURL(qrText(m.id), { width:300, margin:1 });
-    return `<div class="pcard"><div class="t">${esc(CONFIG.NAMA_MAJLIS)} ${esc(CONFIG.TAHUN)}</div><img src="${url}" alt=""><div class="n">${esc(m.nama)}</div><div class="s">${esc(isGuru(m) ? jawatanOf(m) : m.kelas)}${m.meja ? ' · Meja ' + esc(m.meja) : ''}${m.kerusi ? ' · Kerusi ' + esc(m.kerusi) : ''}</div><div class="s">${esc(CONFIG.SEKOLAH)}</div></div>`;
+    return `<div class="pcard"><div class="t">${esc(CONFIG.NAMA_MAJLIS)} ${esc(CONFIG.TAHUN)}</div><img src="${url}" alt=""><div class="n">${esc(m.nama)}</div><div class="s">${esc(isGuru(m) ? 'Guru' : m.kelas)}${m.meja ? ' · Meja ' + esc(m.meja) : ''}${m.kerusi ? ' · Kerusi ' + esc(m.kerusi) : ''}</div><div class="s">${esc(CONFIG.SEKOLAH)}</div></div>`;
   }));
   $('printArea').innerHTML = cards.join('');
   setTimeout(() => window.print(), 300);
