@@ -557,6 +557,8 @@ function parentsOf(m){
     return r ? { nama: r[1].trim(), peranan: r[2].trim() } : { nama: x, peranan: '' };
   });
 }
+// Ibu bapa yang dikongsi adik-beradik ditanda "dikira pada NAMA" supaya dikira sekali sahaja.
+function countParents(m){ return parentsOf(m).filter(p => !/dikira/i.test(p.peranan)).length; }
 function parentsHtml(m){
   const ps = parentsOf(m);
   if (!ps.length) return '';
@@ -760,7 +762,7 @@ function renderParents(){
   // Ringkasan (boleh dilihat semua)
   const rows = kelasList().map(k => {
     const all = murid.filter(m => m.kelas === k);
-    return { k, murid: all.length, ada: all.filter(m => parentsOf(m).length).length, nama: all.reduce((t, m) => t + parentsOf(m).length, 0), hadir: all.filter(hadir).reduce((t, m) => t + bilIB(m), 0) };
+    return { k, murid: all.length, ada: all.filter(m => parentsOf(m).length).length, nama: all.reduce((t, m) => t + countParents(m), 0), hadir: all.filter(hadir).reduce((t, m) => t + bilIB(m), 0) };
   });
   const T = rows.reduce((t, r) => ({ murid:t.murid+r.murid, ada:t.ada+r.ada, nama:t.nama+r.nama, hadir:t.hadir+r.hadir }), { murid:0, ada:0, nama:0, hadir:0 });
   // Orang awam tidak menerima nama ibu bapa, jadi hanya lajur kehadiran dipaparkan.
@@ -776,7 +778,7 @@ function renderParents(){
   if (ibStatus === 'Ada ibu bapa') list = list.filter(m => parentsOf(m).length);
   if (ibStatus === 'Tiada ibu bapa') list = list.filter(m => !parentsOf(m).length);
   if (q) list = list.filter(m => m.nama.toLowerCase().includes(q) || String(m.ibuBapa || '').toLowerCase().includes(q));
-  $('ibNote').textContent = `${list.length} murid · ${list.reduce((t, m) => t + parentsOf(m).length, 0)} nama ibu bapa`;
+  $('ibNote').textContent = `${list.length} murid · ${list.reduce((t, m) => t + countParents(m), 0)} ibu bapa`;
   $('ibList').innerHTML = list.length ? list.map((m, i) => `
     <div class="row">
       <div class="no">${i + 1}</div>
@@ -921,7 +923,7 @@ async function checkin(id, fromScan){
     // Ibu bapa dikira hadir mengikut senarai berdaftar. AJK hanya ubah jika murid
     // memaklumkan ada ibu / bapa yang tidak dapat hadir.
     if (!r.already){
-      const n = parentsOf(m).length;
+      const n = countParents(m);
       if (bilIB(m) !== n){ await api('update', { record: { id, bilIbuBapa: String(n) } }); m.bilIbuBapa = String(n); }
     }
     renderAll();
@@ -1021,8 +1023,8 @@ function showScanResult(res, sound){
   el.innerHTML = esc(res.msg);
   if (res.id && res.type !== 'err'){
     const mm = murid.find(m => m.id === res.id) || {};
-    const n = bilIB(mm), reg = parentsOf(mm).length;
-    if (reg) el.innerHTML += `<div style="margin-top:8px;text-align:left;font-weight:600;color:var(--ink)"><div class="note">Ibu bapa / penjaga (ikut senarai):</div>${parentsHtml(mm)}</div>`;
+    const n = bilIB(mm), reg = countParents(mm);
+    if (parentsOf(mm).length) el.innerHTML += `<div style="margin-top:8px;text-align:left;font-weight:600;color:var(--ink)"><div class="note">Ibu bapa / penjaga (ikut senarai):</div>${parentsHtml(mm)}</div>`;
     el.innerHTML += `<div style="margin-top:8px;font-weight:800;color:var(--sage-d)">👪 ${n} ibu bapa direkod hadir${reg && n === reg ? ' (ikut senarai)' : ''}</div>`;
     el.innerHTML += `<div class="note" style="margin-top:4px">Tukar <b>hanya jika</b> murid maklumkan ada ibu / bapa yang tidak dapat hadir:</div><div class="famset">` +
       [0,1,2,3,4].map(k => `<button type="button" class="btn btn-sm ${k === n ? 'btn-sage' : 'btn-line'}" onclick="setParents('${esc(res.id)}',${k})">${k}</button>`).join('') + '</div>';
