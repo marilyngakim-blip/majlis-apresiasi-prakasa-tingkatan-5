@@ -21,6 +21,7 @@ Data disimpan dalam **Google Sheets** melalui Google Apps Script (percuma).
 | `index.html` | Laman web (letak di GitHub Pages) |
 | `Code.gs` | Backend Google Apps Script |
 | `logo.png` | Logo SMK Langkon (daripada kertas kerja PRISMA 2026) |
+| `guru.js` | Senarai 51 guru SMK Langkon 2026 dan jawatan (eOperasi) |
 | `data.js` | Senarai 118 murid T5 2026 (nama, kelas, L/P, status, bil. ibu bapa) — tanpa nama ibu bapa |
 
 ## Langkah pemasangan

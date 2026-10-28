@@ -24,6 +24,7 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="data.js"></script>
+<script src="guru.js"></script>
 <script>
 /* =====================================================================
    TETAPAN MAJLIS — ubah di sini sahaja
@@ -341,6 +342,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
     <button class="tab" data-tab="tetamu">📝 Daftar Tetamu</button>
     <button class="tab" data-tab="tentatif">🗓️ Tentatif</button>
     <button class="tab" data-tab="ibubapa">👪 Ibu Bapa</button>
+    <button class="tab" data-tab="guru">🧑‍🏫 Guru</button>
     <button class="tab" data-tab="pelan">🪑 Tempat Duduk</button>
   </div>
 </nav>
@@ -412,6 +414,21 @@ footer small{display:block;color:var(--muted);margin-top:4px}
     <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Tentatif Majlis</h2><p id="tSub"></p></div>
     <div class="timeline" id="timeline"></div>
     <div id="bukuBox" class="hidden" style="text-align:center;margin-top:16px"><a class="btn btn-rose" id="bukuLink" target="_blank" rel="noopener">📖 Buka Buku Atur Cara</a></div>
+  </section>
+
+  <!-- GURU -->
+  <section class="page hidden" id="tab-guru">
+    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Kehadiran Guru</h2><p>Guru SMK Langkon — imbas kod QR atau tanda hadir di kaunter.</p></div>
+    <div class="att-mini summary" id="guruSummary"></div>
+    <div class="adminbar admin-only">
+      <button class="btn btn-line btn-sm" onclick="printQR(guruFiltered(), 'GURU')">🖨️ Cetak Kad QR Guru</button>
+      <button class="btn btn-line btn-sm" onclick="exportGuru()">⬇️ CSV Guru</button>
+      <button class="btn btn-line btn-sm hidden" id="seedGuruBtn" onclick="seedGuru()">🌱 Masukkan senarai guru</button>
+    </div>
+    <div class="chips" id="guruStatusChips"></div>
+    <div class="searchbox"><input id="qGuru" type="search" placeholder="Cari nama atau jawatan guru..." oninput="renderGuru()"></div>
+    <p class="count-line" id="guruNote"></p>
+    <div id="guruList"></div>
   </section>
 
   <!-- IBU BAPA -->
@@ -514,7 +531,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
       <p id="scanStatus" class="note" style="text-align:center">Menghidupkan kamera…</p>
       <div id="scanResult" class="result hidden"></div>
       <form onsubmit="manualCheckin(event)" style="display:flex;gap:8px">
-        <input id="manualInput" placeholder="Atau taip nama murid" list="muridNames">
+        <input id="manualInput" placeholder="Atau taip nama murid / guru" list="semuaNames"><datalist id="semuaNames"></datalist>
         <button class="btn btn-sage">Hadir</button>
       </form>
     </div>
@@ -528,7 +545,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 /* ===================== STATE ===================== */
 const DEMO = !CONFIG.API_URL;
 const DEMO_PASS = 'demo'; // Mod Demo sahaja; kata laluan sebenar disimpan dalam Apps Script
-let murid = [];
+let murid = [], guru = [], semua = [];  // semua = murid + guru (guru disimpan dengan kelas "GURU")
 let bilTetamu = 0;
 let visitors = [];
 let adminPass = ssGet('prakasaPass') || '';
@@ -549,6 +566,10 @@ function initials(n){ return String(n||'?').trim().split(/\s+/).filter(w=>!/^(bi
 function nowStr(){ const d=new Date(), p=n=>String(n).padStart(2,'0'); return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`; }
 function byKelasNama(a,b){ return String(a.kelas).localeCompare(String(b.kelas)) || String(a.nama).localeCompare(String(b.nama)); }
 function hadir(m){ return m.status === 'Hadir'; }
+function isGuru(m){ return String(m.kelas || '').trim().toUpperCase() === 'GURU'; }
+const JAWATAN = Object.fromEntries((window.DATA_GURU || []).map(g => [g.nama.toUpperCase(), g.jawatan]));
+function jawatanOf(m){ return JAWATAN[String(m.nama || '').toUpperCase()] || 'Guru'; }
+function byId(id){ return semua.find(x => x.id === String(id)); }
 function bilIB(m){ return parseInt(m.bilIbuBapa, 10) || 0; }
 // "NAMA (Bapa/Penjaga 1); NAMA (Ibu/Penjaga 2)" -> [{nama, peranan}]
 function parentsOf(m){
@@ -585,7 +606,8 @@ async function loadData(){
     if (DEMO) d = demoApi(isAdmin() ? 'adminData' : 'get', { password: adminPass });
     else if (isAdmin()) d = await api('adminData');
     else { const r = await fetch(CONFIG.API_URL); d = await r.json(); }
-    murid = (d.murid || []).map(m => Object.assign({}, m, { id: String(m.id) }));
+    semua = (d.murid || []).map(m => Object.assign({}, m, { id: String(m.id) }));
+    murid = semua.filter(m => !isGuru(m)); guru = semua.filter(isGuru);
     bilTetamu = Number(d.bilTetamu) || 0;
     renderAll();
   } catch(err){
@@ -682,15 +704,17 @@ function renderAll(){
   $('sTotal').textContent = murid.length;
   $('sHadir').textContent = h.length;
   $('sIbuBapa').textContent = ib;
-  $('sJumlah').textContent = h.length + ib + bilTetamu;
-  $('sJumlah').title = `${h.length} murid + ${ib} ibu bapa + ${bilTetamu} tetamu berdaftar`;
+  const gh = guru.filter(hadir).length;
+  $('sJumlah').textContent = h.length + ib + gh + bilTetamu;
+  $('sJumlah').title = `${h.length} murid + ${ib} ibu bapa + ${gh} guru + ${bilTetamu} tetamu berdaftar`;
   const kl = kelasList();
   if (kelasFilter && !kl.includes(kelasFilter)) kelasFilter = '';
   if (attKelas && !kl.includes(attKelas)) attKelas = '';
   $('muridNames').innerHTML = murid.map(m => `<option value="${esc(m.nama)}">`).join('');
+  $('semuaNames').innerHTML = semua.map(m => `<option value="${esc(m.nama)}">`).join('');
   $('kelasList').innerHTML = kl.map(k => `<option value="${esc(k)}">`).join('');
   $('seedBtn').classList.toggle('hidden', !(window.DATA_MURID && murid.length === 0));
-  renderMurid(); renderAtt(); renderParents();
+  renderMurid(); renderAtt(); renderParents(); renderGuru();
 }
 
 function filtered(q, kelas){
@@ -789,6 +813,47 @@ function renderParents(){
     </div>`).join('') : '<div class="empty">Tiada rekod.</div>';
 }
 
+let guruStatus = '';
+function guruFiltered(){
+  const q = ($('qGuru').value || '').trim().toLowerCase();
+  let list = guru.slice().sort((a, b) => a.nama.localeCompare(b.nama));
+  if (guruStatus === 'Hadir') list = list.filter(hadir);
+  if (guruStatus === 'Belum hadir') list = list.filter(m => !hadir(m));
+  if (q) list = list.filter(m => m.nama.toLowerCase().includes(q) || jawatanOf(m).toLowerCase().includes(q));
+  return list;
+}
+function renderGuru(){
+  const h = guru.filter(hadir).length;
+  $('guruSummary').innerHTML = `<div class="stats" style="margin:0;box-shadow:none;border:0;grid-template-columns:repeat(3,1fr)">
+    <div class="stat"><div class="n">${guru.length}</div><div class="l">Guru</div></div>
+    <div class="stat g"><div class="n">${h}</div><div class="l">Hadir</div></div>
+    <div class="stat"><div class="n">${guru.length - h}</div><div class="l">Belum Hadir</div></div></div>`;
+  $('seedGuruBtn').classList.toggle('hidden', !(window.DATA_GURU && guru.length === 0));
+  renderChips('guruStatusChips', ['Hadir', 'Belum hadir'], guruStatus, v => { guruStatus = v; renderGuru(); }, 'Semua');
+  const list = guruFiltered();
+  $('guruNote').textContent = `${list.length} guru`;
+  $('guruList').innerHTML = list.length ? list.map((m, i) => `
+    <div class="row">
+      <div class="no">${i + 1}</div>
+      <div><div class="nm">${esc(m.nama)}</div><div class="sub">${esc(jawatanOf(m))}${m.jantina ? ' · ' + esc(m.jantina) : ''}</div></div>
+      <div class="right">${hadir(m) ? `<span class="tag ok">✔ ${esc(m.masaHadir || 'Hadir')}</span>` : '<span class="tag no">Belum hadir</span>'}
+        <button class="btn btn-line btn-sm" onclick="showQR('${esc(m.id)}')">▦ QR</button>
+        ${isAdmin() ? (hadir(m)
+          ? `<button class="btn btn-line btn-sm" onclick="resetAtt('${esc(m.id)}')">↺ Batal</button>`
+          : `<button class="btn btn-sage btn-sm" onclick="checkin('${esc(m.id)}')">✔ Hadir</button>`) : ''}
+      </div>
+    </div>`).join('') : `<div class="empty">${guru.length ? 'Tiada padanan.' : 'Senarai guru belum dimasukkan.'}</div>`;
+}
+function exportGuru(){
+  downloadCSV(`kehadiran-guru-prakasa-${CONFIG.TAHUN}.csv`, [['Bil','Nama','Jawatan','L/P','Status','Masa Hadir','ID']]
+    .concat(guru.slice().sort((a, b) => a.nama.localeCompare(b.nama)).map((m, i) => [i + 1, m.nama, jawatanOf(m), m.jantina, hadir(m) ? 'Hadir' : 'Belum hadir', m.masaHadir, m.id])));
+}
+async function seedGuru(){
+  if (!confirm(`Masukkan ${window.DATA_GURU.length} guru ke dalam sistem?`)) return;
+  try { const r = await api('bulkAdd', { records: window.DATA_GURU.map(g => ({ nama: g.nama, kelas: 'GURU', jantina: g.jantina })) }); toast(`${r.added || 0} guru dimasukkan`); await loadData(); }
+  catch(err){ alert(err.message); }
+}
+
 async function renderVisitors(){
   if (!isAdmin()) return;
   $('visitorList').innerHTML = '<div class="spinner">Memuatkan…</div>';
@@ -835,7 +900,7 @@ function setAdmin(pw){
 }
 
 function openMuridForm(id){
-  const m = id ? murid.find(x => x.id === id) : null;
+  const m = id ? byId(id) : null;
   $('muridModalTitle').textContent = m ? 'Kemas Kini Murid' : 'Tambah Murid';
   $('mId').value = m ? m.id : '';
   [['mNama','nama'],['mKelas','kelas'],['mJantina','jantina'],['mMeja','meja'],['mKerusi','kerusi'],['mBil','bilIbuBapa'],['mGambar','gambar'],['mIbuBapa','ibuBapa']].forEach(([f, k]) => $(f).value = m ? (m[k] || '') : '');
@@ -850,7 +915,7 @@ async function saveMurid(e){
   finally { btn.disabled = false; }
 }
 async function delMurid(id){
-  const m = murid.find(x => x.id === id);
+  const m = byId(id);
   if (!m || !confirm(`Padam ${m.nama}? Tindakan ini tidak boleh dibatalkan.`)) return;
   try { await api('delete', { id }); toast('Rekod dipadam'); await loadData(); } catch(err){ alert(err.message); }
 }
@@ -904,7 +969,7 @@ async function resetAll(){
   if (!confirm('Set semula kehadiran SEMUA murid kepada “Belum hadir” dan bilangan ibu bapa hadir kepada 0?\n\nNama ibu bapa berdaftar tidak dipadam.')) return;
   try {
     await api('resetAll');
-    await api('bulkAdd', { records: murid.map(m => ({ nama: m.nama, kelas: m.kelas, bilIbuBapa: '0' })) });
+    await api('bulkAdd', { records: semua.map(m => ({ nama: m.nama, kelas: m.kelas, bilIbuBapa: '0' })) });
     toast('Semua kehadiran diset semula'); await loadData();
   } catch(err){ alert(err.message); }
 }
@@ -915,32 +980,33 @@ async function delVisitor(id){
 
 /* ===================== KEHADIRAN ===================== */
 async function checkin(id, fromScan){
-  const m = murid.find(x => x.id === id);
-  if (!m) return { type:'err', msg:'Murid tidak dijumpai' };
+  const m = byId(id);
+  if (!m) return { type:'err', msg:'Nama tidak dijumpai' };
   try {
     const r = await api('attendance', { id });
     Object.assign(m, r.record);
     // Ibu bapa dikira hadir mengikut senarai berdaftar. AJK hanya ubah jika murid
     // memaklumkan ada ibu / bapa yang tidak dapat hadir.
-    if (!r.already){
+    if (!r.already && !isGuru(m)){
       const n = countParents(m);
       if (bilIB(m) !== n){ await api('update', { record: { id, bilIbuBapa: String(n) } }); m.bilIbuBapa = String(n); }
     }
     renderAll();
     const res = r.already
       ? { type:'warn', msg:`${m.nama} sudah direkod hadir${m.masaHadir ? ' (' + m.masaHadir + ')' : ''}`, id }
+      : isGuru(m) ? { type:'ok', msg:`✔ ${m.nama} (${jawatanOf(m)}) — HADIR`, id, guru:true }
       : { type:'ok', msg:`✔ ${m.nama} — HADIR${m.meja ? ' · Meja ' + m.meja : ''}${m.kerusi ? ' · Kerusi ' + m.kerusi : ''}`, id };
-    if (!fromScan) toast(res.msg + (res.type === 'ok' ? ` · 👪 ${bilIB(m)} ibu bapa (ubah di tab Ibu Bapa jika perlu)` : ''));
+    if (!fromScan) toast(res.msg + (res.type === 'ok' && !isGuru(m) ? ` · 👪 ${bilIB(m)} ibu bapa (ubah di tab Ibu Bapa jika perlu)` : ''));
     return res;
   } catch(err){ if (!fromScan) alert(err.message); return { type:'err', msg:err.message }; }
 }
 async function resetAtt(id){
-  const m = murid.find(x => x.id === id);
+  const m = byId(id);
   if (!m || !confirm(`Batalkan kehadiran ${m.nama}?`)) return;
   try { const r = await api('attendance', { id, status:'reset' }); Object.assign(m, r.record); renderAll(); } catch(err){ alert(err.message); }
 }
 async function setParents(id, n){
-  const m = murid.find(x => x.id === id); if (!m) return;
+  const m = byId(id); if (!m) return;
   try { await api('update', { record: { id, bilIbuBapa: String(n) } }); m.bilIbuBapa = String(n); renderAll(); showScanResult(scanState, false); toast(`${m.nama}: ${n} ibu bapa hadir`); }
   catch(err){ alert(err.message); }
 }
@@ -948,11 +1014,11 @@ async function setParents(id, n){
 /* ===================== QR ===================== */
 function qrText(id){ return 'PRAKASA:' + id; }
 function showQR(id){
-  const m = murid.find(x => x.id === id); if (!m) return;
+  const m = byId(id); if (!m) return;
   currentQR = m;
   QRCode.toCanvas($('qrCanvasBig'), qrText(m.id), { width:230, margin:1, color:{ dark:'#3c2a2f', light:'#ffffff' } }, err => { if (err) toast('Gagal menjana QR'); });
   $('qrName').textContent = m.nama;
-  $('qrInfo').textContent = [m.kelas, m.meja && 'Meja ' + m.meja, m.kerusi && 'Kerusi ' + m.kerusi, 'ID ' + m.id].filter(Boolean).join(' · ');
+  $('qrInfo').textContent = [isGuru(m) ? jawatanOf(m) : m.kelas, m.meja && 'Meja ' + m.meja, m.kerusi && 'Kerusi ' + m.kerusi, 'ID ' + m.id].filter(Boolean).join(' · ');
   openModal('qrModal');
 }
 function downloadQR(){
@@ -962,12 +1028,12 @@ function downloadQR(){
   a.download = 'QR-' + currentQR.nama.replace(/[^\w]+/g, '_') + '.png';
   a.click();
 }
-async function printQR(){
-  const list = filtered($('qMurid').value, kelasFilter);
-  if (!list.length) return alert('Tiada murid untuk dicetak.');
+async function printQR(list, label){
+  list = list || filtered($('qMurid').value, kelasFilter);
+  if (!list.length) return alert('Tiada nama untuk dicetak.');
   const cards = await Promise.all(list.map(async m => {
     const url = await QRCode.toDataURL(qrText(m.id), { width:300, margin:1 });
-    return `<div class="pcard"><div class="t">${esc(CONFIG.NAMA_MAJLIS)} ${esc(CONFIG.TAHUN)}</div><img src="${url}" alt=""><div class="n">${esc(m.nama)}</div><div class="s">${esc(m.kelas)}${m.meja ? ' · Meja ' + esc(m.meja) : ''}${m.kerusi ? ' · Kerusi ' + esc(m.kerusi) : ''}</div><div class="s">${esc(CONFIG.SEKOLAH)}</div></div>`;
+    return `<div class="pcard"><div class="t">${esc(CONFIG.NAMA_MAJLIS)} ${esc(CONFIG.TAHUN)}</div><img src="${url}" alt=""><div class="n">${esc(m.nama)}</div><div class="s">${esc(isGuru(m) ? jawatanOf(m) : m.kelas)}${m.meja ? ' · Meja ' + esc(m.meja) : ''}${m.kerusi ? ' · Kerusi ' + esc(m.kerusi) : ''}</div><div class="s">${esc(CONFIG.SEKOLAH)}</div></div>`;
   }));
   $('printArea').innerHTML = cards.join('');
   setTimeout(() => window.print(), 300);
@@ -1012,7 +1078,7 @@ function tick(){
 async function handleScan(text){
   busy = true;
   const id = String(text).trim().replace(/^(PRAKASA|GRAD):/i, '');
-  const res = murid.some(m => m.id === id) ? await checkin(id, true) : { type:'err', msg:'Kod QR tidak dikenali' };
+  const res = byId(id) ? await checkin(id, true) : { type:'err', msg:'Kod QR tidak dikenali' };
   showScanResult(res, true); busy = false;
 }
 function showScanResult(res, sound){
@@ -1021,8 +1087,8 @@ function showScanResult(res, sound){
   const el = $('scanResult');
   el.className = 'result ' + res.type;
   el.innerHTML = esc(res.msg);
-  if (res.id && res.type !== 'err'){
-    const mm = murid.find(m => m.id === res.id) || {};
+  if (res.id && res.type !== 'err' && !isGuru(byId(res.id) || {})){
+    const mm = byId(res.id) || {};
     const n = bilIB(mm), reg = countParents(mm);
     if (parentsOf(mm).length) el.innerHTML += `<div style="margin-top:8px;text-align:left;font-weight:600;color:var(--ink)"><div class="note">Ibu bapa / penjaga (ikut senarai):</div>${parentsHtml(mm)}</div>`;
     el.innerHTML += `<div style="margin-top:8px;font-weight:800;color:var(--sage-d)">👪 ${n} ibu bapa direkod hadir${reg && n === reg ? ' (ikut senarai)' : ''}</div>`;
@@ -1034,8 +1100,8 @@ function showScanResult(res, sound){
 async function manualCheckin(e){
   e.preventDefault();
   const q = $('manualInput').value.trim().toLowerCase(); if (!q) return;
-  const exact = murid.filter(m => m.id.toLowerCase() === q || m.nama.toLowerCase() === q);
-  const list = exact.length ? exact : murid.filter(m => m.nama.toLowerCase().includes(q));
+  const exact = semua.filter(m => m.id.toLowerCase() === q || m.nama.toLowerCase() === q);
+  const list = exact.length ? exact : semua.filter(m => m.nama.toLowerCase().includes(q));
   if (list.length !== 1){ showScanResult({ type:'err', msg: list.length ? `${list.length} padanan — taip nama penuh` : 'Nama tidak dijumpai' }, true); return; }
   showScanResult(await checkin(list[0].id, true), true);
   $('manualInput').value = '';
