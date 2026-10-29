@@ -17,10 +17,10 @@
 
 const SHEET_MURID = 'Murid';
 const SHEET_VIS = 'Pengunjung';
-const MURID_HEADERS = ['id', 'nama', 'kelas', 'jantina', 'meja', 'kerusi', 'gambar', 'status', 'masaHadir', 'bilIbuBapa', 'ibuBapa'];
+const MURID_HEADERS = ['id', 'nama', 'kelas', 'jantina', 'meja', 'kerusi', 'gambar', 'status', 'masaHadir', 'bilIbuBapa', 'ibuBapa', 'tempatIbuBapa'];
 const VIS_HEADERS = ['id', 'masa', 'nama', 'telefon', 'hubungan', 'murid', 'bilangan'];
-const EDITABLE = ['nama', 'kelas', 'jantina', 'meja', 'kerusi', 'gambar', 'bilIbuBapa', 'ibuBapa'];
-const PRIVATE_FIELDS = ['ibuBapa']; // tidak dipaparkan kepada orang awam
+const EDITABLE = ['nama', 'kelas', 'jantina', 'meja', 'kerusi', 'gambar', 'bilIbuBapa', 'ibuBapa', 'tempatIbuBapa'];
+const PRIVATE_FIELDS = []; // nama ibu bapa dipaparkan supaya ibu bapa boleh cari tempat duduk
 const TZ = 'Asia/Kuching';
 // Tiada kata laluan lalai dalam kod awam. `setup` menjana kata laluan rawak (lihat Execution log);
 // tukar kepada kata laluan sendiri dengan `tukarKataLaluan`.
@@ -221,7 +221,14 @@ function addVisitor_(v) {
 function getSheet_(name, headers) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sh = ss.getSheetByName(name);
-  if (!sh) {
+  if (sh) {
+    // Tambah tajuk lajur baharu (cth. tempatIbuBapa) pada helaian sedia ada.
+    const lastCol = sh.getLastColumn();
+    if (lastCol < headers.length) {
+      sh.getRange(1, lastCol + 1, 1, headers.length - lastCol)
+        .setValues([headers.slice(lastCol)]).setFontWeight('bold');
+    }
+  } else {
     sh = ss.insertSheet(name);
     sh.appendRow(headers);
     sh.setFrozenRows(1);

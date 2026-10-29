@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SMK Langkon">
 <meta property="og:title" content="Majlis Apresiasi PRAKASA Murid Tingkatan 5 SMK Langkon 2026">
-<meta property="og:description" content="30 Oktober 2026 (Jumaat) · 2.00 – 6.30 petang · Dewan AQ Kota Marudu. Cari nama murid, kod QR kehadiran & tentatif majlis.">
+<meta property="og:description" content="30 Oktober 2026 (Jumaat) · 1.00 tengah hari – 6.00 petang · Dewan AQ Kota Marudu. Cari nama murid, tempat duduk, kod QR kehadiran & tentatif majlis.">
 <meta property="og:url" content="https://smklangkon.github.io/prakasa2026/">
 <meta property="og:image" content="https://smklangkon.github.io/prakasa2026/og-image.jpg?v=2">
 <meta property="og:image:width" content="1200">
@@ -38,7 +38,7 @@ const CONFIG = {
   TAJUK: 'Majlis Apresiasi PRAKASA Murid Tingkatan 5',
   TAHUN: '2026',
   TARIKH: '30 Oktober 2026 (Jumaat)',
-  MASA: '2.00 petang – 6.30 petang',
+  MASA: '1.00 tengah hari – 6.00 petang',
   TEMPAT: 'Dewan AQ Kota Marudu',
   TEMA: 'Meneroka Ilmu • Membina Aspirasi • Melangkah ke Masa Depan',
   PROGRAM: 'Program PRISMA 2026 • Unit Kurikulum SMK Langkon',
@@ -116,9 +116,10 @@ a{color:var(--rose-d)}
 
 /* ---------- Nav ---------- */
 nav.tabs{position:sticky;top:0;z-index:20;background:rgba(251,244,238,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-nav.tabs .wrap{display:flex;gap:8px;overflow-x:auto;padding-top:10px;padding-bottom:10px;scrollbar-width:none}
-nav.tabs .wrap::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:9px 16px;font-weight:700;cursor:pointer;white-space:nowrap}
+nav.tabs .wrap{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding-top:10px;padding-bottom:10px}
+.tab{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:16px;padding:9px 8px;font-weight:700;cursor:pointer;line-height:1.25;font-size:.9rem;min-height:46px}
+body.is-admin nav.tabs .tab[data-tab="ibubapa"]{grid-column:1/-1;min-height:38px}
+@media (max-width:700px){nav.tabs .wrap{grid-template-columns:repeat(3,1fr);gap:6px}.tab{font-size:.8rem;padding:7px 4px;border-radius:14px}}
 .tab.active{background:var(--rose);border-color:var(--rose);color:#fff;box-shadow:0 6px 16px rgba(196,100,122,.3)}
 
 /* ---------- Stats ---------- */
@@ -177,6 +178,9 @@ body.is-admin .admin-only.adminbar{display:flex!important}
 .pname{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:.9rem;font-weight:700;color:var(--ink)}
 .prole{font-size:.72rem;font-weight:800;border-radius:999px;padding:2px 8px;background:var(--sage-l);color:var(--sage-d)}
 .prole.ibu{background:var(--blush2);color:var(--rose-d)}
+.seatbox{margin-top:10px;text-align:left;background:var(--blush2);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-size:.86rem;position:relative;z-index:1}
+.seatbox b{color:var(--rose-d)}
+.seatbox .sb-p{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
 .parents{font-size:.78rem;color:var(--sage-d);background:var(--sage-l);border-radius:10px;padding:6px 8px;margin-top:8px;text-align:left;white-space:pre-line}
 .empty{text-align:center;color:var(--muted);padding:36px 12px;border:1px dashed var(--line);border-radius:18px;background:#fff}
 
@@ -338,12 +342,12 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 <nav class="tabs">
   <div class="wrap" id="tabs">
     <button class="tab active" data-tab="murid">🌸 Cari Murid</button>
-    <button class="tab" data-tab="kehadiran">✅ Rekod Kehadiran</button>
-    <button class="tab" data-tab="tetamu">📝 Daftar Tetamu</button>
-    <button class="tab" data-tab="tentatif">🗓️ Tentatif</button>
-    <button class="tab" data-tab="ibubapa">👪 Ibu Bapa</button>
     <button class="tab" data-tab="guru">🧑‍🏫 Guru</button>
+    <button class="tab" data-tab="tetamu">📝 Daftar Tetamu</button>
     <button class="tab" data-tab="pelan">🪑 Tempat Duduk</button>
+    <button class="tab" data-tab="tentatif">🗓️ Tentatif</button>
+    <button class="tab" data-tab="kehadiran">✅ Rekod Kehadiran</button>
+    <button class="tab admin-only" data-tab="ibubapa">👪 Ibu Bapa (Admin)</button>
   </div>
 </nav>
 
@@ -355,7 +359,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
       <button class="btn btn-rose btn-sm" onclick="openMuridForm()">＋ Tambah Murid</button>
       <button class="btn btn-line btn-sm" onclick="openModal('importModal')">📥 Import dari Excel</button>
       <button class="btn btn-line btn-sm" onclick="printQR()">🖨️ Cetak Kad QR</button>
-      <button class="btn btn-line btn-sm hidden" id="seedBtn" onclick="seedData()">🌱 Masukkan 118 murid asal</button>
+      <button class="btn btn-line btn-sm hidden" id="seedBtn" onclick="seedData()">🌱 Masukkan murid asal</button>
     </div>
     <div class="searchbox"><input id="qMurid" type="search" placeholder="Taip nama murid..." oninput="renderMurid()"></div>
     <div class="chips" id="kelasChips"></div>
@@ -448,7 +452,9 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 
   <!-- PELAN -->
   <section class="page hidden" id="tab-pelan">
-    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Pelan Tempat Duduk</h2><p>Cari nama anda di tab “Cari Murid” untuk melihat nombor meja dan kerusi.</p></div>
+    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Tempat Duduk</h2><p>Taip nama murid untuk melihat tempat duduk murid dan ibu bapa. Murid dan ibu bapa duduk berasingan.</p></div>
+    <div class="searchbox"><input id="qSeat" type="search" placeholder="Taip nama murid..." oninput="renderSeats()"></div>
+    <div id="seatList" class="grid" style="margin-bottom:18px"></div>
     <div id="pelanBox" class="panel" style="text-align:center"></div>
   </section>
 </main>
@@ -485,6 +491,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
         <div><label for="mKerusi">Kerusi</label><input id="mKerusi" maxlength="20"></div>
         <div><label for="mBil">Bil. ibu bapa hadir</label><input id="mBil" type="number" min="0" max="10"></div>
         <div><label for="mGambar">URL gambar</label><input id="mGambar" type="url" maxlength="300" placeholder="https://..."></div>
+        <div class="full"><label for="mTempatIB">Tempat duduk ibu bapa</label><input id="mTempatIB" maxlength="60" placeholder="cth: Meja 12 · Kerusi 3-4"></div>
         <div class="full"><label for="mIbuBapa">Nama ibu bapa / penjaga</label><textarea id="mIbuBapa" rows="3" maxlength="400" placeholder="NAMA BAPA (Bapa/Penjaga 1); NAMA IBU (Ibu/Penjaga 2)"></textarea></div>
       </div>
       <div style="display:flex;gap:10px;margin-top:18px">
@@ -568,6 +575,12 @@ function byKelasNama(a,b){ return String(a.kelas).localeCompare(String(b.kelas))
 function hadir(m){ return m.status === 'Hadir'; }
 function isGuru(m){ return String(m.kelas || '').trim().toUpperCase() === 'GURU'; }
 function byId(id){ return semua.find(x => x.id === String(id)); }
+function seatMurid(m){ return [m.meja && 'Meja ' + m.meja, m.kerusi && 'Kerusi ' + m.kerusi].filter(Boolean).join(' · '); }
+function seatHtml(m){
+  const ps = parentsOf(m);
+  return `<div class="seatbox"><div><b>🪑 Tempat murid:</b> ${esc(seatMurid(m) || 'Akan dimaklumkan')}</div>` +
+    (ps.length ? `<div class="sb-p"><b>👪 Ibu bapa / penjaga:</b>${parentsHtml(m)}<div style="margin-top:4px"><b>🪑 Tempat ibu bapa:</b> ${esc(m.tempatIbuBapa || 'Akan dimaklumkan')}</div></div>` : '') + '</div>';
+}
 function bilIB(m){ return parseInt(m.bilIbuBapa, 10) || 0; }
 // "NAMA (Bapa/Penjaga 1); NAMA (Ibu/Penjaga 2)" -> [{nama, peranan}]
 function parentsOf(m){
@@ -627,7 +640,7 @@ function demoApi(action, b){
   if (['get','visitor'].indexOf(action) === -1 && b.password !== DEMO_PASS) throw new Error('Kata laluan admin salah');
   const find = id => db.murid.find(m => m.id === String(id));
   const newId = () => 'P' + Math.random().toString(36).slice(2,9).toUpperCase();
-  const EDIT = ['nama','kelas','jantina','meja','kerusi','gambar','bilIbuBapa','ibuBapa'];
+  const EDIT = ['nama','kelas','jantina','meja','kerusi','gambar','bilIbuBapa','ibuBapa','tempatIbuBapa'];
   const pub = () => ({ ok:true, murid: db.murid.map(m => { const c = Object.assign({}, m); if (action !== 'adminData') delete c.ibuBapa; return c; }), bilTetamu: db.pengunjung.reduce((t,v)=>t+(+v.bilangan||1),0) });
   let out = { ok:true };
   switch(action){
@@ -712,7 +725,7 @@ function renderAll(){
   $('semuaNames').innerHTML = semua.map(m => `<option value="${esc(m.nama)}">`).join('');
   $('kelasList').innerHTML = kl.map(k => `<option value="${esc(k)}">`).join('');
   $('seedBtn').classList.toggle('hidden', !(window.DATA_MURID && murid.length === 0));
-  renderMurid(); renderAtt(); renderParents(); renderGuru();
+  renderMurid(); renderAtt(); renderParents(); renderGuru(); renderSeats();
 }
 
 function filtered(q, kelas){
@@ -725,22 +738,20 @@ function renderMurid(){
   const list = filtered($('qMurid').value, kelasFilter);
   const grid = $('muridGrid');
   $('muridCount').textContent = murid.length ? `${list.length} daripada ${murid.length} murid` : '';
-  if (!murid.length){ grid.innerHTML = `<div class="empty" style="grid-column:1/-1">Tiada murid lagi.${isAdmin() ? ' Tekan “Masukkan 118 murid asal” atau “Import dari Excel”.' : ''}</div>`; return; }
+  if (!murid.length){ grid.innerHTML = `<div class="empty" style="grid-column:1/-1">Tiada murid lagi.${isAdmin() ? ' Tekan “Masukkan murid asal” atau “Import dari Excel”.' : ''}</div>`; return; }
   if (!list.length){ grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Tiada padanan. Cuba ejaan lain.</div>'; return; }
   grid.innerHTML = list.map((m, i) => {
     const ini = esc(initials(m.nama)), g = m.jantina === 'L' ? 'L' : '';
     const pic = m.gambar ? `<img class="avatar ${g}" src="${esc(m.gambar)}" alt="" data-i="${ini}" onerror="avatarFail(this)">` : `<div class="avatar ${g}">${ini}</div>`;
-    const seat = (m.meja || m.kerusi) ? `<span class="tag seat">🪑 ${[m.meja && 'Meja ' + esc(m.meja), m.kerusi && 'Kerusi ' + esc(m.kerusi)].filter(Boolean).join(' · ')}</span>` : '';
     const st = hadir(m) ? `<span class="tag ok">✔ Hadir${m.masaHadir ? ' ' + esc(String(m.masaHadir).split(' ')[1] || '') : ''}</span>` : '<span class="tag no">Belum hadir</span>';
     const fam = bilIB(m) ? `<span class="tag fam">👪 ${bilIB(m)} ibu bapa</span>` : '';
-    const par = isAdmin() && m.ibuBapa ? `<div class="parents">👪 Ibu bapa / penjaga:${parentsHtml(m)}</div>` : '';
     const adm = isAdmin() ? `
       <button class="btn btn-line btn-sm" onclick="openMuridForm('${esc(m.id)}')" title="Kemas kini">✏️</button>
       ${hadir(m) ? '' : `<button class="btn btn-sage btn-sm" onclick="checkin('${esc(m.id)}')">✔ Hadir</button>`}
       <button class="btn btn-danger btn-sm" onclick="delMurid('${esc(m.id)}')" title="Padam">🗑️</button>` : '';
     return `<div class="card" style="animation-delay:${Math.min(i, 16) * .025}s">${pic}
       <h3>${esc(m.nama)}</h3><div class="cls">${esc(m.kelas || '—')}</div>
-      <div>${st}${fam}${seat}</div>${par}
+      <div>${st}${fam}</div>${seatHtml(m)}
       <div class="actions"><button class="btn btn-rose btn-sm" onclick="showQR('${esc(m.id)}')">▦ Kod QR</button>${adm}</div></div>`;
   }).join('');
 }
@@ -852,6 +863,14 @@ async function seedGuru(){
   catch(err){ alert(err.message); }
 }
 
+function renderSeats(){
+  const q = ($('qSeat').value || '').trim().toLowerCase();
+  if (q.length < 2){ $('seatList').innerHTML = '<div class="empty" style="grid-column:1/-1">Taip sekurang-kurangnya 2 huruf nama murid.</div>'; return; }
+  const list = murid.filter(m => m.nama.toLowerCase().includes(q)).sort(byKelasNama).slice(0, 30);
+  $('seatList').innerHTML = list.length ? list.map(m => `<div class="card"><h3>${esc(m.nama)}</h3><div class="cls">${esc(m.kelas)}</div>${seatHtml(m)}</div>`).join('')
+    : '<div class="empty" style="grid-column:1/-1">Tiada padanan. Cuba ejaan lain.</div>';
+}
+
 async function renderVisitors(){
   if (!isAdmin()) return;
   $('visitorList').innerHTML = '<div class="spinner">Memuatkan…</div>';
@@ -901,12 +920,12 @@ function openMuridForm(id){
   const m = id ? byId(id) : null;
   $('muridModalTitle').textContent = m ? 'Kemas Kini Murid' : 'Tambah Murid';
   $('mId').value = m ? m.id : '';
-  [['mNama','nama'],['mKelas','kelas'],['mJantina','jantina'],['mMeja','meja'],['mKerusi','kerusi'],['mBil','bilIbuBapa'],['mGambar','gambar'],['mIbuBapa','ibuBapa']].forEach(([f, k]) => $(f).value = m ? (m[k] || '') : '');
+  [['mNama','nama'],['mKelas','kelas'],['mJantina','jantina'],['mMeja','meja'],['mKerusi','kerusi'],['mBil','bilIbuBapa'],['mGambar','gambar'],['mIbuBapa','ibuBapa'],['mTempatIB','tempatIbuBapa']].forEach(([f, k]) => $(f).value = m ? (m[k] || '') : '');
   openModal('muridModal'); setTimeout(() => $('mNama').focus(), 50);
 }
 async function saveMurid(e){
   e.preventDefault();
-  const rec = { id:$('mId').value, nama:$('mNama').value.trim(), kelas:$('mKelas').value.trim().toUpperCase(), jantina:$('mJantina').value, meja:$('mMeja').value.trim(), kerusi:$('mKerusi').value.trim(), bilIbuBapa:$('mBil').value.trim(), gambar:$('mGambar').value.trim(), ibuBapa:$('mIbuBapa').value.trim() };
+  const rec = { id:$('mId').value, nama:$('mNama').value.trim(), kelas:$('mKelas').value.trim().toUpperCase(), jantina:$('mJantina').value, meja:$('mMeja').value.trim(), kerusi:$('mKerusi').value.trim(), bilIbuBapa:$('mBil').value.trim(), gambar:$('mGambar').value.trim(), ibuBapa:$('mIbuBapa').value.trim(), tempatIbuBapa:$('mTempatIB').value.trim() };
   const btn = $('mSave'); btn.disabled = true;
   try { await api(rec.id ? 'update' : 'add', { record: rec }); closeModal('muridModal'); toast(rec.id ? 'Maklumat dikemas kini' : 'Murid ditambah'); await loadData(); }
   catch(err){ alert(err.message); }
@@ -1088,6 +1107,7 @@ function showScanResult(res, sound){
   if (res.id && res.type !== 'err' && !isGuru(byId(res.id) || {})){
     const mm = byId(res.id) || {};
     const n = bilIB(mm), reg = countParents(mm);
+    el.innerHTML += `<div style="margin-top:8px;text-align:left;font-weight:600;color:var(--ink)"><div>🪑 Murid: <b>${esc(seatMurid(mm) || 'belum ditetapkan')}</b></div>${parentsOf(mm).length ? `<div>🪑 Ibu bapa: <b>${esc(mm.tempatIbuBapa || 'belum ditetapkan')}</b></div>` : ''}</div>`;
     if (parentsOf(mm).length) el.innerHTML += `<div style="margin-top:8px;text-align:left;font-weight:600;color:var(--ink)"><div class="note">Ibu bapa / penjaga (ikut senarai):</div>${parentsHtml(mm)}</div>`;
     el.innerHTML += `<div style="margin-top:8px;font-weight:800;color:var(--sage-d)">👪 ${n} ibu bapa direkod hadir${reg && n === reg ? ' (ikut senarai)' : ''}</div>`;
     el.innerHTML += `<div class="note" style="margin-top:4px">Tukar <b>hanya jika</b> murid maklumkan ada ibu / bapa yang tidak dapat hadir:</div><div class="famset">` +
@@ -1134,8 +1154,8 @@ function downloadCSV(name, rows){
   a.download = name; a.click();
 }
 function exportAttendance(){
-  downloadCSV(`kehadiran-prakasa-${CONFIG.TAHUN}.csv`, [['Bil','Kelas','Nama Murid','L/P','Status','Masa Hadir','Bil. Ibu Bapa Hadir','Ibu Bapa / Penjaga','Meja','Kerusi','ID']]
-    .concat(murid.slice().sort(byKelasNama).map((m, i) => [i + 1, m.kelas, m.nama, m.jantina, hadir(m) ? 'Hadir' : 'Tidak hadir', m.masaHadir, bilIB(m), m.ibuBapa || '', m.meja, m.kerusi, m.id])));
+  downloadCSV(`kehadiran-prakasa-${CONFIG.TAHUN}.csv`, [['Bil','Kelas','Nama Murid','L/P','Status','Masa Hadir','Bil. Ibu Bapa Hadir','Ibu Bapa / Penjaga','Meja','Kerusi','Tempat Ibu Bapa','ID']]
+    .concat(murid.slice().sort(byKelasNama).map((m, i) => [i + 1, m.kelas, m.nama, m.jantina, hadir(m) ? 'Hadir' : 'Tidak hadir', m.masaHadir, bilIB(m), m.ibuBapa || '', m.meja, m.kerusi, m.tempatIbuBapa || '', m.id])));
 }
 function exportParents(){
   const rows = [['Bil','Kelas','Nama Murid','Status Murid','Nama Ibu Bapa / Penjaga','Peranan','Bil. Ibu Bapa Hadir']];
