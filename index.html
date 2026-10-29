@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SMK Langkon">
 <meta property="og:title" content="Majlis Apresiasi PRAKASA Murid Tingkatan 5 SMK Langkon 2026">
-<meta property="og:description" content="30 Oktober 2026 (Jumaat) · 1.00 tengah hari – 6.00 petang · Dewan AQ Kota Marudu. Cari nama murid, tempat duduk, kod QR kehadiran & tentatif majlis.">
+<meta property="og:description" content="30 Oktober 2026 (Jumaat) · 2.00 petang – 6.00 petang · Dewan AQ Kota Marudu. Cari nama murid, pelan tempat duduk, kod QR kehadiran & atur cara majlis.">
 <meta property="og:url" content="https://smklangkon.github.io/prakasa2026/">
 <meta property="og:image" content="https://smklangkon.github.io/prakasa2026/og-image.jpg?v=2">
 <meta property="og:image:width" content="1200">
@@ -38,28 +38,29 @@ const CONFIG = {
   TAJUK: 'Majlis Apresiasi PRAKASA Murid Tingkatan 5',
   TAHUN: '2026',
   TARIKH: '30 Oktober 2026 (Jumaat)',
-  MASA: '1.00 tengah hari – 6.00 petang',
+  MASA: '2.00 petang – 6.00 petang',
   TEMPAT: 'Dewan AQ Kota Marudu',
   TEMA: 'Meneroka Ilmu • Membina Aspirasi • Melangkah ke Masa Depan',
   PROGRAM: 'Program PRISMA 2026 • Unit Kurikulum SMK Langkon',
   LOGO_URL: 'logo.png',    // logo sekolah (kosong = ikon bunga)
   PELAN_URL: '',           // gambar pelan tempat duduk (kosong = tiada)
   BUKU_URL: '',            // pautan buku atur cara digital (kosong = tiada)
-  TENTATIF: [
+  // Atur cara: [masa, aktiviti (atau senarai aktiviti), senarai butiran pilihan]
+  ATUR_CARA: [
     ['2.00 petang', 'Pendaftaran murid, ibu bapa dan tetamu jemputan'],
-    ['2.15 petang', 'Ketibaan guru-guru dan tetamu kehormat'],
+    ['2.15 petang', 'Ketibaan guru-guru dan AJK Pelaksana'],
     ['2.25 petang', 'Ketibaan Pengetua dan barisan pentadbir sekolah'],
-    ['2.30 petang', 'Ketibaan Tetamu Kehormat / Perasmi'],
+    ['2.30 petang', 'Ketibaan Perasmi'],
     ['2.35 petang', 'Bacaan doa'],
-    ['2.40 petang', 'Nyanyian Lagu Negaraku dan Lagu Sabah Tanah Airku'],
+    ['2.40 petang', 'Nyanyian Lagu: Negaraku, Lagu Sabah Tanah Airku dan Lagu Sekolah'],
     ['2.50 petang', 'Ucapan alu-aluan Pengetua SMK Langkon'],
     ['2.55 petang', 'Ucapan YDP PIBG'],
     ['3.05 petang', 'Ucapan dan perasmian oleh PPD'],
     ['3.20 petang', 'Tayangan montaj kenangan murid graduasi'],
-    ['3.35 petang', 'Penyampaian sijil graduasi kepada murid'],
+    ['3.35 petang', ['Ucapan wakil murid', 'Penyampaian sijil graduasi kepada murid']],
     ['4.15 petang', 'Persembahan'],
-    ['4.35 petang', 'Penyampaian Anugerah Khas Graduasi:', ['Akademik', 'Harapan UB', 'Harapan Kelab dan Persatuan', 'Harapan Sukan dan Permainan']],
-    ['5.05 petang', 'Sesi bergambar rasmi:', ['Tetamu Kehormat bersama pentadbir', 'Guru-guru bersama murid graduasi']],
+    ['4.35 petang', 'Penyampaian Anugerah Khas Graduasi:', ['Akademik', 'Harapan Kokurikulum', 'Anugerah Murid Global']],
+    ['5.05 petang', 'Sesi bergambar rasmi:', ['Perasmi bersama Pentadbir', 'Perasmi bersama semua Graduan', 'Pentadbir bersama Graduan mengikut Kelas', 'Graduan bersama Guru Kelas', 'Graduan bersama Ibu Bapa', 'Semua Guru bersama Graduan', 'Kenangan bebas']],
     ['5.25 petang', 'Jamuan'],
     ['6.00 petang', 'Bersurai']
   ]
@@ -201,7 +202,7 @@ body.is-admin .admin-only.adminbar{display:flex!important}
 .row .sub{font-size:.82rem;color:var(--muted)}
 .row .right{display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
 
-/* Tentatif */
+/* Atur cara */
 .timeline{position:relative;max-width:720px;margin:0 auto;padding-left:34px}
 .timeline::before{content:'';position:absolute;left:13px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--rose),var(--sage))}
 .t-item{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 16px;margin-bottom:10px}
@@ -344,8 +345,8 @@ footer small{display:block;color:var(--muted);margin-top:4px}
     <button class="tab active" data-tab="murid">🌸 Cari Murid</button>
     <button class="tab" data-tab="guru">🧑‍🏫 Guru</button>
     <button class="tab" data-tab="tetamu">📝 Daftar Tetamu</button>
-    <button class="tab" data-tab="pelan">🪑 Tempat Duduk</button>
-    <button class="tab" data-tab="tentatif">🗓️ Tentatif</button>
+    <button class="tab" data-tab="pelan">🪑 Pelan Tempat Duduk</button>
+    <button class="tab" data-tab="tentatif">🗓️ Atur Cara</button>
     <button class="tab" data-tab="kehadiran">✅ Rekod Kehadiran</button>
     <button class="tab admin-only" data-tab="ibubapa">👪 Ibu Bapa (Admin)</button>
   </div>
@@ -413,9 +414,9 @@ footer small{display:block;color:var(--muted);margin-top:4px}
     </div>
   </section>
 
-  <!-- TENTATIF -->
+  <!-- ATUR CARA -->
   <section class="page hidden" id="tab-tentatif">
-    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Tentatif Majlis</h2><p id="tSub"></p></div>
+    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Atur Cara Majlis</h2><p id="tSub"></p></div>
     <div class="timeline" id="timeline"></div>
     <div id="bukuBox" class="hidden" style="text-align:center;margin-top:16px"><a class="btn btn-rose" id="bukuLink" target="_blank" rel="noopener">📖 Buka Buku Atur Cara</a></div>
   </section>
@@ -452,7 +453,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 
   <!-- PELAN -->
   <section class="page hidden" id="tab-pelan">
-    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Tempat Duduk</h2><p>Taip nama murid untuk melihat tempat duduk murid dan ibu bapa. Murid dan ibu bapa duduk berasingan.</p></div>
+    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Pelan Tempat Duduk</h2><p>Taip nama murid untuk melihat tempat duduk murid dan ibu bapa. Murid dan ibu bapa duduk berasingan.</p></div>
     <div class="searchbox"><input id="qSeat" type="search" placeholder="Taip nama murid..." oninput="renderSeats()"></div>
     <div id="seatList" class="grid" style="margin-bottom:18px"></div>
     <div id="pelanBox" class="panel" style="text-align:center"></div>
@@ -520,11 +521,12 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 <div id="qrModal" class="modal hidden" onclick="bgClose(event)">
   <div class="modal-box" style="text-align:center">
     <div class="modal-head"><h3>Kod QR Kehadiran</h3><button class="x" onclick="closeModal('qrModal')">✕</button></div>
+    <p style="margin:0 0 14px;font-weight:800;color:var(--rose-d);font-size:1.05rem">Tunjukkan kod ini kepada urus setia untuk imbasan kehadiran</p>
     <div class="qr-frame"><canvas id="qrCanvasBig"></canvas></div>
     <h3 id="qrName" style="margin-top:14px;font-family:Nunito,sans-serif;font-size:1.1rem;color:var(--ink)"></h3>
     <p id="qrInfo" class="note"></p>
-    <p class="note">Tunjukkan kod ini di kaunter pendaftaran. Tangkap layar untuk simpan.</p>
-    <button class="btn btn-line" onclick="downloadQR()">⬇️ Simpan gambar QR</button>
+    <p class="note" style="font-size:.95rem">Tidak perlu muat turun. Buka paparan ini pada telefon anda.</p>
+    <button class="btn btn-rose" style="width:100%" onclick="closeModal('qrModal')">Tutup</button>
   </div>
 </div>
 
@@ -678,8 +680,8 @@ function applyConfig(){
   $('hTema').textContent = CONFIG.TEMA ? `“${CONFIG.TEMA}”` : '';
   $('fNama').textContent = CONFIG.TAJUK; $('fSekolah').textContent = CONFIG.SEKOLAH; $('fTahun').textContent = [CONFIG.PROGRAM, CONFIG.DAERAH].filter(Boolean).join(' · ');
   if (CONFIG.LOGO_URL) $('logoBox').innerHTML = `<img src="${esc(CONFIG.LOGO_URL)}" alt="Logo ${esc(CONFIG.SEKOLAH)}">`;
-  $('timeline').innerHTML = CONFIG.TENTATIF.map(([t, txt, list]) =>
-    `<div class="t-item"><time>${esc(t)}</time><p>${esc(txt)}</p>${list ? '<ul>' + list.map(i => `<li>${esc(i)}</li>`).join('') + '</ul>' : ''}</div>`).join('');
+  $('timeline').innerHTML = CONFIG.ATUR_CARA.map(([t, txt, list]) =>
+    `<div class="t-item"><time>${esc(t)}</time>${[].concat(txt).map(x => `<p>${esc(x)}</p>`).join('')}${list ? '<ul>' + list.map(i => `<li>${esc(i)}</li>`).join('') + '</ul>' : ''}</div>`).join('');
   if (CONFIG.BUKU_URL){ $('bukuBox').classList.remove('hidden'); $('bukuLink').href = CONFIG.BUKU_URL; }
   $('pelanBox').innerHTML = CONFIG.PELAN_URL
     ? `<img src="${esc(CONFIG.PELAN_URL)}" alt="Pelan tempat duduk" style="max-width:100%;border-radius:16px">`

@@ -6,7 +6,7 @@ Laman web satu halaman untuk Majlis Apresiasi PRAKASA Murid Tingkatan 5 SMK Lang
 
 - **Cari Murid** — cari nama, lihat kelas, meja/kerusi dan **kod QR kehadiran** setiap murid.
 - **Daftar Tetamu** — ibu bapa / tetamu isi borang semasa tiba (nama, telefon, hubungan, nama murid, bilangan orang).
-- **Tentatif** majlis, **Pelan Tempat Duduk**, pautan **Buku Atur Cara** (pilihan).
+- **Atur Cara** majlis, **Pelan Tempat Duduk**, pautan **Buku Atur Cara** (pilihan).
 - **Rekod Kehadiran** — jadual analisis ikut kelas (enrolmen, hadir, % hadir, ibu bapa hadir, jumlah), dikemas kini setiap 20 saat.
 - **Imbas QR** — selepas imbas, nama ibu bapa berdaftar dipaparkan dan admin tekan bilangan yang datang bersama (0–4).
 - **Ibu Bapa** — senarai ibu bapa / penjaga mengikut murid (nama hanya untuk admin), carian dan CSV.
@@ -50,7 +50,7 @@ TEMPAT: 'Dewan AQ Kota Marudu',
 LOGO_URL: 'https://...logo-sekolah.png',
 PELAN_URL: 'https://...pelan-tempat-duduk.png',
 BUKU_URL: 'https://anyflip.com/...',
-ATUR_CARA: [ ... ]   // ubah ikut tentatif sebenar
+ATUR_CARA: [ ... ]   // ubah ikut atur cara sebenar
 ```
 
 Selagi `API_URL` kosong, laman berjalan dalam **Mod Demo** (data contoh, disimpan dalam pelayar sahaja; kata laluan demo `demo`).
