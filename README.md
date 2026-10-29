@@ -1,4 +1,4 @@
-# Sistem Pendaftaran & Kehadiran — Majlis Apresiasi PRAKASA Murid Tingkatan 5 SMK Langkon
+# Sistem Pendaftaran & Kehadiran — Majlis Graduasi & Apresiasi Tingkatan 5 SMK Langkon 2026
 
 Laman web satu halaman untuk Majlis Apresiasi PRAKASA Murid Tingkatan 5 SMK Langkon:
 

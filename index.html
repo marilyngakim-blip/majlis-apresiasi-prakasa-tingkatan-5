@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#fbf4ee">
-<title>Majlis Apresiasi PRAKASA Murid Tingkatan 5 SMK Langkon</title>
+<meta name="theme-color" content="#7a0b16">
+<title>Majlis Graduasi &amp; Apresiasi Tingkatan 5 SMK Langkon 2026</title>
 <!-- Pratonton pautan (WhatsApp, Facebook, Telegram) -->
-<meta name="description" content="Pendaftaran & kehadiran Majlis Apresiasi PRAKASA Murid Tingkatan 5 SMK Langkon · 30 Oktober 2026 · Dewan AQ Kota Marudu">
+<meta name="description" content="Pendaftaran & kehadiran Majlis Graduasi & Apresiasi Tingkatan 5 SMK Langkon · 30 Oktober 2026 · Dewan AQ Kota Marudu">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SMK Langkon">
-<meta property="og:title" content="Majlis Apresiasi PRAKASA Murid Tingkatan 5 SMK Langkon 2026">
+<meta property="og:title" content="Majlis Graduasi &amp; Apresiasi Tingkatan 5 SMK Langkon 2026">
 <meta property="og:description" content="30 Oktober 2026 (Jumaat) · 2.00 petang – 6.00 petang · Dewan AQ Kota Marudu. Cari nama murid, pelan tempat duduk, kod QR kehadiran & atur cara majlis.">
 <meta property="og:url" content="https://smklangkon.github.io/prakasa2026/">
-<meta property="og:image" content="https://smklangkon.github.io/prakasa2026/og-image.jpg?v=2">
+<meta property="og:image" content="https://smklangkon.github.io/prakasa2026/og-image.jpg?v=3">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Majlis Apresiasi PRAKASA SMK Langkon 2026">
+<meta property="og:image:alt" content="Majlis Graduasi & Apresiasi Tingkatan 5 SMK Langkon 2026">
 <meta property="og:locale" content="ms_MY">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Great+Vibes&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,600&family=Great+Vibes&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script src="data.js"></script>
@@ -35,22 +35,24 @@ const CONFIG = {
   SEKOLAH: 'SMK Langkon',
   DAERAH: 'Kota Marudu, Sabah',
   NAMA_MAJLIS: 'PRAKASA',
-  TAJUK: 'Majlis Apresiasi PRAKASA Murid Tingkatan 5',
+  TAJUK: 'Majlis Graduasi & Apresiasi Tingkatan 5',
   TAHUN: '2026',
   TARIKH: '30 Oktober 2026 (Jumaat)',
-  MASA: '2.00 petang – 6.00 petang',
+  MASA: '02.00 petang – 6.00 petang',
   TEMPAT: 'Dewan AQ Kota Marudu',
-  TEMA: 'Meneroka Ilmu • Membina Aspirasi • Melangkah ke Masa Depan',
+  TEMA: 'Mengiktiraf Kecemerlangan, Memacu Masa Depan',
+  PERASMI: 'Tn. Halim bin Bidin @ Bibin',
+  JAWATAN_PERASMI: 'Pegawai Pendidikan Daerah Kota Marudu',
   PROGRAM: 'Program PRISMA 2026 • Unit Kurikulum SMK Langkon',
   LOGO_URL: 'logo.png',    // logo sekolah (kosong = ikon bunga)
   PELAN_URL: 'pelan-dewan.jpg', // gambar pelan susun atur dewan
   // Petunjuk meja dalam pelan dewan
   PETUNJUK_MEJA: [
-    ['VIP', 'Meja 3 & 15', '#b8925a'],
-    ['Guru', 'Meja 1, 2, 16 & 17', '#3f5d48'],
-    ['Murid', 'Meja 4 – 14', '#c4647a'],
-    ['Ibu bapa', 'Meja 18 – 27', '#7c9a7e'],
-    ['Penari', 'Meja 28', '#8a7377']
+    ['VIP', 'Meja 3 & 15', '#d4af37'],
+    ['Guru', 'Meja 1, 2, 16 & 17', '#4f0610'],
+    ['Murid', 'Meja 4 – 14', '#a8121e'],
+    ['Ibu bapa', 'Meja 18 – 27', '#d9822b'],
+    ['Penari', 'Meja 28', '#8a8a8a']
   ],
   BUKU_URL: '',            // pautan buku atur cara digital (kosong = tiada)
   // Atur cara: [masa, aktiviti (atau senarai aktiviti), senarai butiran pilihan]
@@ -76,66 +78,69 @@ const CONFIG = {
 </script>
 <style>
 :root{
-  --bg:#fbf4ee; --paper:#ffffff; --blush:#f6e1dc; --blush2:#fbeeea;
-  --rose:#c4647a; --rose-d:#8c3a52; --sage:#7c9a7e; --sage-d:#3f5d48; --sage-l:#e3ece1;
-  --gold:#b8925a; --ink:#3c2a2f; --muted:#8a7377; --line:#ecd6d0;
-  --ok:#3f8a5a; --ok-bg:#e1f1e5; --no:#b4505f; --no-bg:#f9e3e6;
-  --shadow:0 10px 30px rgba(140,58,82,.10);
+  --bg:#fdf8ef; --paper:#ffffff; --blush:#f3e2b8; --blush2:#fdf5e4;
+  --rose:#a8121e; --rose-d:#6e0812; --sage:#c9a227; --sage-d:#8a6510; --sage-l:#f7ecd0;
+  --gold:#d4af37; --gold-l:#f3d98a; --ink:#2b1610; --muted:#86705a; --line:#ead7a8;
+  --ok:#2f7d4f; --ok-bg:#e1f1e5; --no:#a8121e; --no-bg:#fbe5e5;
+  --shadow:0 10px 30px rgba(110,8,18,.12);
+  --crimson-grad:linear-gradient(180deg,#d52a33 0%,#a8121e 45%,#6e0812 100%);
+  --gold-grad:linear-gradient(135deg,#a67c1a 0%,#f6dc8a 45%,#c99a2e 70%,#8a6510 100%);
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;overflow-x:hidden;line-height:1.5}
-h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;margin:0;font-weight:700;color:var(--rose-d)}
+body{background:var(--bg) radial-gradient(circle at 100% 100%,rgba(212,175,55,.10),transparent 40%);background-attachment:fixed;color:var(--ink);font-family:'Nunito',system-ui,sans-serif;overflow-x:hidden;line-height:1.5}
+h1,h2,h3{font-family:'Cinzel','Cormorant Garamond',Georgia,serif;margin:0;font-weight:700;color:var(--rose-d)}
 button,input,select,textarea{font:inherit}
 a{color:var(--rose-d)}
 .wrap{max-width:1040px;margin:0 auto;padding:0 16px}
 .hidden{display:none!important}
 .script{font-family:'Great Vibes',cursive;font-weight:400}
 
-/* ---------- Hero ---------- */
-.hero{position:relative;overflow:hidden;text-align:center;padding:64px 16px 72px;
-  background:radial-gradient(ellipse at top,#fff 0%,var(--blush2) 55%,var(--blush) 100%)}
-.hero .corner{position:absolute;width:min(46vw,300px);opacity:.95;pointer-events:none}
-.hero .tl{top:-30px;left:-40px}
-.hero .tr{top:-30px;right:-40px;transform:scaleX(-1)}
-.hero .bl{bottom:-60px;left:-50px;transform:scaleY(-1);opacity:.55}
-.hero .br{bottom:-60px;right:-50px;transform:scale(-1,-1);opacity:.55}
-.emblem{position:relative;width:170px;height:170px;margin:0 auto 18px}
-.emblem svg.wreath{position:absolute;inset:0;width:100%;height:100%}
-.emblem .core{position:absolute;inset:34px;border-radius:50%;background:#fff;box-shadow:0 6px 24px rgba(140,58,82,.18);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.emblem .core img{width:94%;height:94%;object-fit:contain}
-.tema{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1rem,3.2vw,1.2rem);color:var(--sage-d);margin:2px auto 0;max-width:560px;position:relative}
-.school{letter-spacing:.32em;font-size:.78rem;font-weight:800;color:var(--sage-d);text-transform:uppercase;margin:0;position:relative}
-.hero .script{font-size:clamp(2.6rem,9vw,4.4rem);color:var(--rose);line-height:1;margin:10px 0 0;position:relative}
-.hero h1{font-size:clamp(3rem,13vw,6.2rem);letter-spacing:.14em;line-height:1;color:var(--rose-d);margin:2px 0 6px;padding-left:.14em;position:relative}
-.hero .sub{font-family:'Cormorant Garamond',serif;font-size:clamp(1.15rem,3.6vw,1.6rem);font-style:italic;color:var(--ink);margin:0;position:relative}
-.leafline{display:flex;align-items:center;justify-content:center;gap:10px;margin:16px auto;color:var(--sage)}
-.leafline span{height:1px;width:70px;background:linear-gradient(90deg,transparent,var(--sage))}
-.leafline span:last-child{transform:scaleX(-1)}
-.info{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:8px;position:relative}
-.info div{background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-weight:700;font-size:.92rem;color:var(--ink);backdrop-filter:blur(4px)}
-.info b{color:var(--rose)}
-.petal{position:absolute;top:-20px;width:14px;height:10px;border-radius:14px 0 14px 0;background:var(--rose);opacity:.35;animation:fall linear infinite;pointer-events:none}
-@keyframes fall{to{transform:translate(60px,520px) rotate(360deg);opacity:0}}
-@media (prefers-reduced-motion:reduce){.petal{display:none}}
+/* ---------- Hero (ikut buku atur cara: satin merah & emas) ---------- */
+.hero{position:relative;overflow:hidden;text-align:center;padding:70px 16px 84px;background:#fff linear-gradient(180deg,#fff 0%,#fffaf0 60%,#fbf0d8 100%)}
+.silk{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero-in{position:relative;z-index:2;max-width:640px;margin:0 auto}
+.logo-ring{width:118px;height:118px;margin:0 auto 14px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 0 4px #fff,0 0 0 7px var(--gold),0 10px 28px rgba(110,8,18,.25)}
+.logo-ring img{width:92%;height:92%;object-fit:contain}
+.title-wrap{position:relative;display:inline-block;padding:0 .2em}
+.t-majlis{font-family:'Cinzel',serif;font-weight:800;font-size:clamp(1.7rem,6vw,2.6rem);letter-spacing:.12em;color:var(--rose);text-shadow:0 1px 0 #f3d98a,0 2px 0 #b8862b;line-height:1;margin-bottom:-.15em}
+.t-grad,.t-apr{font-family:'Great Vibes',cursive;line-height:.95;background:var(--crimson-grad);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 0 #f3d98a) drop-shadow(0 2px 0 #b8862b) drop-shadow(0 6px 8px rgba(110,8,18,.25))}
+.t-grad{font-size:clamp(4.2rem,19vw,8rem);padding:0 .1em}
+.t-apr{font-size:clamp(2.4rem,10vw,4.2rem);margin-top:-.25em;text-align:right;padding-right:.2em}
+.cap{position:absolute;right:-.6em;top:-.2em;width:clamp(70px,20vw,120px);transform:rotate(14deg);filter:drop-shadow(0 6px 8px rgba(0,0,0,.3))}
+.t-ting{display:flex;align-items:center;justify-content:center;gap:12px;font-family:'Cinzel',serif;font-weight:700;font-size:clamp(1.05rem,4.4vw,1.6rem);color:var(--rose-d);margin-top:4px}
+.t-ting span{height:2px;width:clamp(30px,10vw,70px);background:var(--gold-grad)}
+.tema{text-wrap:balance;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:clamp(1.05rem,3.8vw,1.35rem);letter-spacing:.12em;color:#b8862b;margin:16px auto 0;max-width:520px;line-height:1.5}
+.rasmi{margin:22px auto 0;max-width:470px;background:linear-gradient(180deg,#9b0f1b,#6e0812);color:#fff;border-radius:12px;padding:12px 18px;box-shadow:0 0 0 3px #fff,0 0 0 6px var(--gold),0 12px 26px rgba(110,8,18,.28)}
+.rasmi small{display:block;letter-spacing:.15em;font-size:.82rem;color:#f6e7c0}
+.rasmi b{display:block;font-size:clamp(1.05rem,4.2vw,1.35rem);margin:2px 0;color:#fff;letter-spacing:.03em}
+.rasmi span{font-size:.85rem;letter-spacing:.06em;color:#f6e7c0}
+.info{display:inline-flex;flex-direction:column;gap:10px;margin-top:22px;text-align:left}
+.info div{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--rose-d);font-size:clamp(.88rem,3.4vw,1rem)}
+.info i{width:38px;height:38px;border-radius:50%;background:var(--gold-grad);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:1.1rem;box-shadow:0 3px 8px rgba(138,101,16,.35);flex:0 0 auto}
+.info b{color:var(--rose-d)}
+.spark{position:absolute;color:#e8c766;font-size:22px;animation:twinkle 3s ease-in-out infinite;pointer-events:none;z-index:1;text-shadow:0 0 10px rgba(243,217,138,.9)}
+@keyframes twinkle{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.1)}}
+@media (prefers-reduced-motion:reduce){.spark{animation:none}}
+.script{font-family:'Great Vibes',cursive;font-weight:400}
 
 .topbar{position:absolute;top:12px;right:12px;z-index:30;display:flex;gap:8px}
-.pill-btn{border:1px solid var(--line);background:rgba(255,255,255,.92);color:var(--rose-d);border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer;box-shadow:var(--shadow)}
+.pill-btn{border:1px solid var(--gold);background:rgba(255,255,255,.95);color:var(--rose-d);border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer;box-shadow:var(--shadow)}
 .demo-bar{background:var(--sage-d);color:#f3f7f1;text-align:center;font-size:.85rem;padding:8px 16px}
 
 /* ---------- Nav ---------- */
-nav.tabs{position:sticky;top:0;z-index:20;background:rgba(251,244,238,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.tabs{position:sticky;top:0;z-index:20;background:rgba(253,248,239,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 nav.tabs .wrap{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;padding-top:10px;padding-bottom:10px}
-.tab{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:16px;padding:9px 8px;font-weight:700;cursor:pointer;line-height:1.25;font-size:.9rem;min-height:46px}
+.tab{border:1px solid var(--line);background:#fff;font-family:'Nunito',sans-serif;color:var(--ink);border-radius:16px;padding:9px 8px;font-weight:700;cursor:pointer;line-height:1.25;font-size:.9rem;min-height:46px}
 body.is-admin nav.tabs .tab[data-tab="ibubapa"]{grid-column:1/-1;min-height:38px}
 @media (max-width:700px){nav.tabs .wrap{grid-template-columns:repeat(3,1fr);gap:6px}.tab{font-size:.8rem;padding:7px 4px;border-radius:14px}}
-.tab.active{background:var(--rose);border-color:var(--rose);color:#fff;box-shadow:0 6px 16px rgba(196,100,122,.3)}
+.tab.active{background:linear-gradient(180deg,#b3121f,#6e0812);border-color:var(--gold);color:#fff;box-shadow:0 0 0 2px #fff inset,0 6px 16px rgba(110,8,18,.35)}
 
 /* ---------- Stats ---------- */
-.stats{margin:-38px auto 28px;position:relative;z-index:5;background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(4,1fr)}
+.stats{margin:-38px auto 28px;position:relative;z-index:5;background:var(--paper);border:2px solid var(--gold);border-radius:22px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(4,1fr)}
 .stat{padding:18px 8px;text-align:center;position:relative}
-.stat+.stat::before{content:'❀';position:absolute;left:-7px;top:50%;transform:translateY(-50%);color:#e9b9c2;font-size:.9rem}
-.stat .n{font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:700;line-height:1;color:var(--rose-d)}
+.stat+.stat::before{content:'✦';position:absolute;left:-7px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:.9rem}
+.stat .n{font-family:'Cinzel',serif;font-size:2.3rem;font-weight:700;line-height:1;color:var(--rose-d)}
 .stat .l{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:6px}
 .stat.g .n{color:var(--sage-d)}
 
@@ -144,7 +149,7 @@ section.page{padding:8px 0 20px}
 .head{text-align:center;margin:18px 0 22px}
 .head h2{font-size:clamp(1.8rem,5vw,2.4rem)}
 .head p{color:var(--muted);margin:4px 0 0}
-.head .flor{color:var(--rose);letter-spacing:.4em;font-size:.85rem}
+.head .flor{color:var(--gold);letter-spacing:.4em;font-size:.85rem}
 .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
 .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font-weight:700;font-size:.88rem;cursor:pointer;color:var(--ink)}
 .chip.on{background:var(--sage-d);color:#fff;border-color:var(--sage-d)}
@@ -155,7 +160,7 @@ input,select,textarea{width:100%;padding:12px 14px;border-radius:14px;border:1px
 input:focus,select:focus,textarea:focus{outline:2px solid var(--rose);outline-offset:1px}
 label{display:block;font-size:.85rem;font-weight:800;color:var(--sage-d);margin:0 0 5px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:10px 18px;border-radius:999px;border:1px solid transparent;font-weight:800;cursor:pointer;text-decoration:none}
-.btn-rose{background:var(--rose);color:#fff}
+.btn-rose{background:linear-gradient(180deg,#b3121f,#7a0b16);color:#fff;border-color:#c99a2e}
 .btn-sage{background:var(--sage-d);color:#fff}
 .btn-line{background:#fff;color:var(--rose-d);border-color:var(--line)}
 .btn-danger{background:var(--no-bg);color:var(--no)}
@@ -170,11 +175,11 @@ body.is-admin .admin-only.adminbar{display:flex!important}
 
 /* Kad murid */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
-.card{background:var(--paper);border:1px solid var(--line);border-radius:22px 22px 22px 6px;padding:18px 16px 14px;text-align:center;position:relative;overflow:hidden;animation:rise .35s both}
-.card::after{content:'';position:absolute;right:-26px;top:-26px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,var(--blush) 0 30%,transparent 31%),radial-gradient(circle at 30% 70%,var(--sage-l) 0 25%,transparent 26%);opacity:.9}
+.card{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:22px 22px 22px 6px;padding:18px 16px 14px;text-align:center;position:relative;overflow:hidden;animation:rise .35s both}
+.card::after{content:'';position:absolute;right:-26px;top:-26px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.25) 0 30%,transparent 31%),radial-gradient(circle at 30% 70%,rgba(168,18,30,.12) 0 25%,transparent 26%);opacity:.9}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}}
-.avatar{width:78px;height:78px;margin:0 auto 10px;border-radius:50% 50% 50% 12%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.7rem;color:#fff;background:linear-gradient(135deg,var(--rose),#e3a0ad);object-fit:cover;position:relative;z-index:1}
-.avatar.L{background:linear-gradient(135deg,var(--sage-d),var(--sage))}
+.avatar{width:78px;height:78px;margin:0 auto 10px;border-radius:50% 50% 50% 12%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.7rem;color:#fff;background:var(--crimson-grad);box-shadow:0 0 0 3px #fff,0 0 0 5px var(--gold);object-fit:cover;position:relative;z-index:1}
+.avatar.L{background:linear-gradient(180deg,#e0b84a,#8a6510)}
 .card h3{font-family:'Nunito',sans-serif;font-size:.98rem;font-weight:800;color:var(--ink);line-height:1.3;position:relative;z-index:1}
 .card .cls{font-size:.82rem;color:var(--muted);font-weight:700;margin:3px 0 10px}
 .tag{display:inline-flex;align-items:center;gap:4px;font-size:.78rem;font-weight:800;border-radius:999px;padding:4px 10px;margin:2px}
@@ -216,13 +221,13 @@ body.is-admin .admin-only.adminbar{display:flex!important}
 
 /* Atur cara */
 .timeline{position:relative;max-width:720px;margin:0 auto;padding-left:34px}
-.timeline::before{content:'';position:absolute;left:13px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--rose),var(--sage))}
+.timeline::before{content:'';position:absolute;left:13px;top:6px;bottom:6px;width:3px;background:var(--gold-grad)}
 .t-item{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 16px;margin-bottom:10px}
-.t-item::before{content:'✿';position:absolute;left:-31px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--bg);color:var(--rose);display:flex;align-items:center;justify-content:center;font-size:1.05rem}
+.t-item::before{content:'✦';position:absolute;left:-31px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--bg);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.05rem}
 .t-item time{display:block;font-weight:800;color:var(--rose);font-size:.85rem;letter-spacing:.04em}
 .t-item p{margin:2px 0 0;font-weight:700}
 .t-item ul{margin:6px 0 0;padding-left:20px;color:var(--ink)}
-.t-item ul li::marker{content:'❀  ';color:var(--sage)}
+.t-item ul li::marker{content:'✦  ';color:var(--gold)}
 
 /* Panel / borang */
 .panel{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}
@@ -248,9 +253,10 @@ body.is-admin .admin-only.adminbar{display:flex!important}
 .famset{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:8px}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:90;background:var(--rose-d);color:#fff;padding:12px 20px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:calc(100% - 32px);text-align:center;font-weight:700}
 .spinner{text-align:center;color:var(--muted);padding:30px}
-footer{text-align:center;padding:34px 16px 40px;margin-top:30px;background:var(--blush);color:var(--rose-d)}
-footer .script{font-size:clamp(1.6rem,6vw,2.2rem);color:var(--rose);line-height:1.2}
-footer small{display:block;color:var(--muted);margin-top:4px}
+footer{text-align:center;padding:34px 16px 40px;margin-top:30px;background:linear-gradient(180deg,#8a0c18,#4f0610);color:#f6e7c0;border-top:4px solid var(--gold)}
+footer .script{font-size:clamp(1.6rem,6vw,2.2rem);color:var(--gold-l);line-height:1.2}
+footer small{display:block;color:#e6d3a6;margin-top:4px}
+footer b{color:#fff}
 
 @media (max-width:700px){
   .stats{grid-template-columns:repeat(2,1fr)}
@@ -269,11 +275,11 @@ footer small{display:block;color:var(--muted);margin-top:4px}
   body{background:#fff!important}
   body>*:not(#printArea){display:none!important}
   #printArea{display:grid!important;grid-template-columns:repeat(3,1fr);gap:6mm}
-  .pcard{border:1.5px solid #c4647a;border-radius:6mm 6mm 6mm 1.5mm;padding:5mm;text-align:center;break-inside:avoid;font-family:'Nunito',sans-serif}
+  .pcard{border:1.5px solid #a8121e;border-radius:6mm 6mm 6mm 1.5mm;padding:5mm;text-align:center;break-inside:avoid;font-family:'Nunito',sans-serif}
   .pcard img{width:36mm;height:36mm}
   .pcard .s{font-size:8pt;color:#8a7377}
   .pcard .n{font-weight:800;font-size:10pt;margin:2mm 0 1mm;color:#3c2a2f}
-  .pcard .t{font-family:'Great Vibes',cursive;font-size:15pt;color:#c4647a}
+  .pcard .t{font-family:'Great Vibes',cursive;font-size:15pt;color:#a8121e}
 }
 </style>
 </head>
@@ -291,7 +297,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
       <circle r="5" fill="#d9a85c"/>
     </g>
     <g id="flower2">
-      <g fill="#c4647a">
+      <g fill="#a8121e">
         <ellipse cx="0" cy="-8" rx="5" ry="8"/><ellipse cx="0" cy="-8" rx="5" ry="8" transform="rotate(60)"/>
         <ellipse cx="0" cy="-8" rx="5" ry="8" transform="rotate(120)"/><ellipse cx="0" cy="-8" rx="5" ry="8" transform="rotate(180)"/>
         <ellipse cx="0" cy="-8" rx="5" ry="8" transform="rotate(240)"/><ellipse cx="0" cy="-8" rx="5" ry="8" transform="rotate(300)"/>
@@ -321,25 +327,54 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 
 <header class="hero" id="hero">
   <div class="topbar"><button class="pill-btn" id="adminBtn" onclick="adminBtnClick()">🔒 Admin</button></div>
-  <svg class="corner tl" viewBox="0 0 280 260"><use href="#cluster"/></svg>
-  <svg class="corner tr" viewBox="0 0 280 260"><use href="#cluster"/></svg>
-  <svg class="corner bl" viewBox="0 0 280 260"><use href="#cluster"/></svg>
-  <svg class="corner br" viewBox="0 0 280 260"><use href="#cluster"/></svg>
+  <!-- Satin merah & reben emas -->
+  <svg class="silk" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="gRed" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5c0610"/><stop offset=".45" stop-color="#b3121f"/><stop offset=".6" stop-color="#e2353e"/><stop offset="1" stop-color="#7a0b16"/></linearGradient>
+      <linearGradient id="gRed2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a0b16"/><stop offset=".5" stop-color="#c41c27"/><stop offset="1" stop-color="#5c0610"/></linearGradient>
+      <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a67c1a"/><stop offset=".4" stop-color="#f6dc8a"/><stop offset=".7" stop-color="#c99a2e"/><stop offset="1" stop-color="#f3d98a"/></linearGradient>
+      <linearGradient id="gCream" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e9d6a8"/><stop offset=".5" stop-color="#fff7e2"/><stop offset="1" stop-color="#d9bf86"/></linearGradient>
+    </defs>
+    <!-- atas -->
+    <path d="M0,0 H1000 V95 C860,150 760,40 600,70 C470,95 380,20 250,45 C150,62 70,20 0,60 Z" fill="url(#gRed)"/>
+    <path d="M1000,0 V190 C930,170 880,110 820,60 C780,30 740,10 700,0 Z" fill="url(#gRed2)" opacity=".95"/>
+    <path d="M0,62 C70,22 150,64 250,47 C380,22 470,97 600,72 C760,42 860,152 1000,97" fill="none" stroke="url(#gGold)" stroke-width="7"/>
+    <path d="M700,0 C760,20 800,60 840,110 C880,160 940,185 1000,192" fill="none" stroke="url(#gGold)" stroke-width="5"/>
+    <!-- kiri: reben krim & emas -->
+    <path d="M0,120 C55,260 25,420 70,560 C105,670 60,790 0,860 Z" fill="url(#gCream)" opacity=".85"/>
+    <path d="M0,130 C60,270 30,430 75,565 C112,680 66,795 0,870" fill="none" stroke="url(#gGold)" stroke-width="5"/>
+    <path d="M0,200 C35,320 12,450 42,560" fill="none" stroke="url(#gGold)" stroke-width="2.5" opacity=".8"/>
+    <!-- bawah -->
+    <path d="M0,1000 V900 C150,860 300,950 480,915 C650,880 780,960 1000,890 V1000 Z" fill="url(#gRed)"/>
+    <path d="M0,898 C150,858 300,948 480,913 C650,878 780,958 1000,888" fill="none" stroke="url(#gGold)" stroke-width="7"/>
+    <path d="M0,955 C200,925 380,990 560,960 C720,935 860,985 1000,950" fill="none" stroke="url(#gGold)" stroke-width="3" opacity=".9"/>
+  </svg>
+  <span class="spark" style="top:14%;right:12%">✦</span><span class="spark" style="top:44%;left:6%;animation-delay:.8s">✦</span>
+  <span class="spark" style="top:60%;right:7%;animation-delay:1.6s;font-size:16px">✦</span><span class="spark" style="top:30%;left:16%;animation-delay:2.2s;font-size:14px">✦</span>
 
-  <div class="emblem">
-    <svg class="wreath" viewBox="-100 -100 200 200" id="wreath"></svg>
-    <div class="core" id="logoBox"><svg viewBox="-30 -30 60 60" width="70" height="70"><use href="#flower" transform="scale(1.8)"/></svg></div>
-  </div>
-  <p class="school" id="hSekolah"></p>
-  <p class="script">Majlis Apresiasi</p>
-  <h1 id="hNama"></h1>
-  <p class="sub" id="hSub"></p>
-  <div class="leafline"><span></span>❦<span></span></div>
-  <p class="tema" id="hTema"></p>
-  <div class="info" style="margin-top:16px">
-    <div>📅 <b id="hTarikh"></b></div>
-    <div>🕑 <b id="hMasa"></b></div>
-    <div>📍 <b id="hTempat"></b></div>
+  <div class="hero-in">
+    <div class="logo-ring" id="logoBox">🎓</div>
+    <div class="title-wrap">
+      <div class="t-majlis">MAJLIS</div>
+      <div class="t-grad">Graduasi</div>
+      <div class="t-apr">&amp; Apresiasi</div>
+      <svg class="cap" viewBox="0 0 120 100" aria-hidden="true">
+        <path d="M60 8 L116 32 L60 56 L4 32 Z" fill="#141414"/><path d="M60 8 L116 32 L60 40 Z" fill="#2c2c2c"/>
+        <path d="M30 44 V66 C30 76 90 76 90 66 V44 L60 56 Z" fill="#0d0d0d"/>
+        <circle cx="60" cy="32" r="3.5" fill="#d4af37"/>
+        <path d="M60 32 C80 36 96 40 100 48 L100 74" fill="none" stroke="#d4af37" stroke-width="3"/>
+        <path d="M95 74 h10 l3 20 h-16 Z" fill="#c99a2e"/><path d="M96 80 v14 M100 80 v15 M104 80 v14" stroke="#8a6510" stroke-width="1.2"/>
+      </svg>
+    </div>
+    <div class="t-ting"><span></span><b id="hSub">TINGKATAN 5 TAHUN 2026</b><span></span></div>
+    <p class="tema" id="hTema"></p>
+    <div class="rasmi" id="rasmiBox"><small>Dirasmikan oleh :</small><b id="hPerasmi"></b><span id="hJawPerasmi"></span></div>
+    <div class="info">
+      <div><i>📅</i><b id="hTarikh"></b></div>
+      <div><i>🕑</i><b id="hMasa"></b></div>
+      <div><i>📍</i><b id="hTempat"></b></div>
+    </div>
+    <p class="school" id="hSekolah" style="margin-top:18px;letter-spacing:.25em;font-size:.75rem;font-weight:800;color:var(--sage-d)"></p>
   </div>
 </header>
 
@@ -354,7 +389,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 
 <nav class="tabs">
   <div class="wrap" id="tabs">
-    <button class="tab active" data-tab="murid">🌸 Cari Murid</button>
+    <button class="tab active" data-tab="murid">🎓 Cari Murid</button>
     <button class="tab" data-tab="guru">🧑‍🏫 Guru</button>
     <button class="tab" data-tab="tetamu">📝 Daftar Tetamu</button>
     <button class="tab" data-tab="pelan">🪑 Pelan Tempat Duduk</button>
@@ -367,7 +402,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 <main class="wrap">
   <!-- MURID -->
   <section class="page" id="tab-murid">
-    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Murid Tingkatan 5</h2><p>Cari nama anda untuk mendapatkan kod QR kehadiran.</p></div>
+    <div class="head"><div class="flor">✦ ✦ ✦</div><h2>Murid Tingkatan 5</h2><p>Cari nama anda untuk mendapatkan kod QR kehadiran.</p></div>
     <div class="adminbar admin-only">
       <button class="btn btn-rose btn-sm" onclick="openMuridForm()">＋ Tambah Murid</button>
       <button class="btn btn-line btn-sm" onclick="openModal('importModal')">📥 Import dari Excel</button>
@@ -382,7 +417,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 
   <!-- KEHADIRAN -->
   <section class="page hidden" id="tab-kehadiran">
-    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Rekod Kehadiran</h2><p>Analisis kehadiran mengikut kelas — dikemas kini secara langsung.</p></div>
+    <div class="head"><div class="flor">✦ ✦ ✦</div><h2>Rekod Kehadiran</h2><p>Analisis kehadiran mengikut kelas — dikemas kini secara langsung.</p></div>
     <div class="adminbar admin-only">
       <button class="btn btn-sage" onclick="openScanner()">📷 Imbas QR</button>
       <button class="btn btn-line btn-sm" onclick="exportAttendance()">⬇️ CSV Kehadiran</button>
@@ -398,7 +433,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 
   <!-- TETAMU -->
   <section class="page hidden" id="tab-tetamu">
-    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Pendaftaran Tetamu</h2><p>Untuk ibu bapa, penjaga dan tetamu jemputan semasa tiba di majlis.</p></div>
+    <div class="head"><div class="flor">✦ ✦ ✦</div><h2>Pendaftaran Tetamu</h2><p>Untuk ibu bapa, penjaga dan tetamu jemputan semasa tiba di majlis.</p></div>
     <div class="panel" style="max-width:640px;margin:0 auto">
       <form id="visitorForm" onsubmit="submitVisitor(event)">
         <div class="form-grid">
@@ -428,14 +463,14 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 
   <!-- ATUR CARA -->
   <section class="page hidden" id="tab-tentatif">
-    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Atur Cara Majlis</h2><p id="tSub"></p></div>
+    <div class="head"><div class="flor">✦ ✦ ✦</div><h2>Atur Cara Majlis</h2><p id="tSub"></p></div>
     <div class="timeline" id="timeline"></div>
     <div id="bukuBox" class="hidden" style="text-align:center;margin-top:16px"><a class="btn btn-rose" id="bukuLink" target="_blank" rel="noopener">📖 Buka Buku Atur Cara</a></div>
   </section>
 
   <!-- GURU -->
   <section class="page hidden" id="tab-guru">
-    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Kehadiran Guru</h2><p>Guru SMK Langkon — imbas kod QR atau tanda hadir di kaunter.<br><b>🪑 Tempat duduk guru: Meja 1, 2, 16 &amp; 17</b></p></div>
+    <div class="head"><div class="flor">✦ ✦ ✦</div><h2>Kehadiran Guru</h2><p>Guru SMK Langkon — imbas kod QR atau tanda hadir di kaunter.<br><b>🪑 Tempat duduk guru: Meja 1, 2, 16 &amp; 17</b></p></div>
     <div class="att-mini summary" id="guruSummary"></div>
     <div class="adminbar admin-only">
       <button class="btn btn-line btn-sm" onclick="printQR(guruFiltered(), 'GURU')">🖨️ Cetak Kad QR Guru</button>
@@ -450,7 +485,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 
   <!-- IBU BAPA -->
   <section class="page hidden" id="tab-ibubapa">
-    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Senarai Ibu Bapa / Penjaga</h2><p>Ibu bapa dan penjaga yang berdaftar mengikut murid.</p></div>
+    <div class="head"><div class="flor">✦ ✦ ✦</div><h2>Senarai Ibu Bapa / Penjaga</h2><p>Ibu bapa dan penjaga yang berdaftar mengikut murid.</p></div>
     <div class="summary" id="ibSummary"></div>
     <div id="ibLocked" class="empty">🔒 Senarai nama ibu bapa hanya dipaparkan kepada AJK. Tekan <b>Admin</b> di bahagian atas untuk log masuk.</div>
     <div class="admin-only">
@@ -465,7 +500,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 
   <!-- PELAN -->
   <section class="page hidden" id="tab-pelan">
-    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Pelan Tempat Duduk</h2><p>Taip nama murid untuk melihat tempat duduk murid dan ibu bapa. Murid dan ibu bapa duduk berasingan.</p></div>
+    <div class="head"><div class="flor">✦ ✦ ✦</div><h2>Pelan Tempat Duduk</h2><p>Taip nama murid untuk melihat tempat duduk murid dan ibu bapa. Murid dan ibu bapa duduk berasingan.</p></div>
     <div class="searchbox"><input id="qSeat" type="search" placeholder="Taip nama murid..." oninput="renderSeats()"></div>
     <div id="seatList" class="grid" style="margin-bottom:18px"></div>
     <div id="pelanBox" class="panel" style="text-align:center"></div>
@@ -685,11 +720,11 @@ function demoApi(action, b){
 function applyConfig(){
   document.title = `${CONFIG.TAJUK} ${CONFIG.SEKOLAH} ${CONFIG.TAHUN}`;
   $('hSekolah').textContent = `${CONFIG.SEKOLAH} • ${CONFIG.DAERAH}`;
-  $('hNama').textContent = CONFIG.NAMA_MAJLIS;
-  $('hSub').textContent = `Murid Tingkatan 5 · ${CONFIG.TAHUN}`;
-  $('hTarikh').textContent = CONFIG.TARIKH; $('hMasa').textContent = CONFIG.MASA; $('hTempat').textContent = CONFIG.TEMPAT;
+  $('hSub').textContent = `Tingkatan 5 Tahun ${CONFIG.TAHUN}`.toUpperCase();
+  if (CONFIG.PERASMI){ $('hPerasmi').textContent = CONFIG.PERASMI; $('hJawPerasmi').textContent = CONFIG.JAWATAN_PERASMI || ''; } else $('rasmiBox').classList.add('hidden');
+  $('hTarikh').textContent = CONFIG.TARIKH.toUpperCase(); $('hMasa').textContent = CONFIG.MASA.toUpperCase(); $('hTempat').textContent = CONFIG.TEMPAT.toUpperCase();
   $('tSub').textContent = `${CONFIG.TARIKH} · ${CONFIG.MASA} · ${CONFIG.TEMPAT}`;
-  $('hTema').textContent = CONFIG.TEMA ? `“${CONFIG.TEMA}”` : '';
+  $('hTema').innerHTML = CONFIG.TEMA ? `“${esc(CONFIG.TEMA).replace(/ (\S+)$/, '&nbsp;$1')}”` : '';
   $('fNama').textContent = CONFIG.TAJUK; $('fSekolah').textContent = CONFIG.SEKOLAH; $('fTahun').textContent = [CONFIG.PROGRAM, CONFIG.DAERAH].filter(Boolean).join(' · ');
   if (CONFIG.LOGO_URL) $('logoBox').innerHTML = `<img src="${esc(CONFIG.LOGO_URL)}" alt="Logo ${esc(CONFIG.SEKOLAH)}">`;
   $('timeline').innerHTML = CONFIG.ATUR_CARA.map(([t, txt, list]) =>
@@ -701,22 +736,6 @@ function applyConfig(){
        <a href="${esc(CONFIG.PELAN_URL)}" target="_blank" rel="noopener"><img src="${esc(CONFIG.PELAN_URL)}" alt="Pelan susun atur dewan" style="width:100%;border-radius:16px;margin-top:14px" loading="lazy"></a>
        <p class="note" style="margin-top:8px">Tekan gambar untuk besarkan.</p>`
     : '<p class="note">Pelan tempat duduk akan dimuat naik tidak lama lagi.</p>';
-  // Kalungan bunga di sekeliling lambang
-  let w = '';
-  for (let i = 0; i < 14; i++){
-    const a = i / 14 * Math.PI * 2, x = Math.cos(a) * 80, y = Math.sin(a) * 80, deg = a * 180 / Math.PI;
-    w += `<use href="#leaf${i%2?'2':''}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(deg+100).toFixed(0)}) scale(.75)"/>`;
-    if (i % 2 === 0) w += `<use href="#${i%4?'flower2':'flower'}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${i%4?'.9':'.7'})"/>`;
-  }
-  $('wreath').innerHTML = w;
-  // Kelopak jatuh
-  const hero = $('hero');
-  for (let i = 0; i < 10; i++){
-    const p = document.createElement('span'); p.className = 'petal';
-    p.style.left = (Math.random() * 100) + '%'; p.style.animationDuration = (9 + Math.random() * 8) + 's'; p.style.animationDelay = (-Math.random() * 12) + 's';
-    if (i % 3 === 0) p.style.background = 'var(--sage)';
-    hero.appendChild(p);
-  }
   if (DEMO) $('demoBar').classList.remove('hidden');
 }
 
