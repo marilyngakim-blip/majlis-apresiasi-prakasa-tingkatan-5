@@ -43,7 +43,15 @@ const CONFIG = {
   TEMA: 'Meneroka Ilmu • Membina Aspirasi • Melangkah ke Masa Depan',
   PROGRAM: 'Program PRISMA 2026 • Unit Kurikulum SMK Langkon',
   LOGO_URL: 'logo.png',    // logo sekolah (kosong = ikon bunga)
-  PELAN_URL: '',           // gambar pelan tempat duduk (kosong = tiada)
+  PELAN_URL: 'pelan-dewan.jpg', // gambar pelan susun atur dewan
+  // Petunjuk meja dalam pelan dewan
+  PETUNJUK_MEJA: [
+    ['VIP', 'Meja 3 & 15', '#b8925a'],
+    ['Guru', 'Meja 1, 2, 16 & 17', '#3f5d48'],
+    ['Murid', 'Meja 4 – 14', '#c4647a'],
+    ['Ibu bapa', 'Meja 18 – 27', '#7c9a7e'],
+    ['Penari', 'Meja 28', '#8a7377']
+  ],
   BUKU_URL: '',            // pautan buku atur cara digital (kosong = tiada)
   // Atur cara: [masa, aktiviti (atau senarai aktiviti), senarai butiran pilihan]
   ATUR_CARA: [
@@ -179,6 +187,10 @@ body.is-admin .admin-only.adminbar{display:flex!important}
 .pname{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:.9rem;font-weight:700;color:var(--ink)}
 .prole{font-size:.72rem;font-weight:800;border-radius:999px;padding:2px 8px;background:var(--sage-l);color:var(--sage-d)}
 .prole.ibu{background:var(--blush2);color:var(--rose-d)}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;text-align:left}
+.legend div{display:flex;align-items:center;gap:8px;background:var(--blush2);border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:.88rem}
+.legend i{width:14px;height:14px;border-radius:50%;flex:0 0 auto}
+.legend span{color:var(--muted);margin-left:auto;white-space:nowrap}
 .seatbox{margin-top:10px;text-align:left;background:var(--blush2);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-size:.86rem;position:relative;z-index:1}
 .seatbox b{color:var(--rose-d)}
 .seatbox .sb-p{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
@@ -423,7 +435,7 @@ footer small{display:block;color:var(--muted);margin-top:4px}
 
   <!-- GURU -->
   <section class="page hidden" id="tab-guru">
-    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Kehadiran Guru</h2><p>Guru SMK Langkon — imbas kod QR atau tanda hadir di kaunter.</p></div>
+    <div class="head"><div class="flor">✿ ❀ ✿</div><h2>Kehadiran Guru</h2><p>Guru SMK Langkon — imbas kod QR atau tanda hadir di kaunter.<br><b>🪑 Tempat duduk guru: Meja 1, 2, 16 &amp; 17</b></p></div>
     <div class="att-mini summary" id="guruSummary"></div>
     <div class="adminbar admin-only">
       <button class="btn btn-line btn-sm" onclick="printQR(guruFiltered(), 'GURU')">🖨️ Cetak Kad QR Guru</button>
@@ -684,7 +696,10 @@ function applyConfig(){
     `<div class="t-item"><time>${esc(t)}</time>${[].concat(txt).map(x => `<p>${esc(x)}</p>`).join('')}${list ? '<ul>' + list.map(i => `<li>${esc(i)}</li>`).join('') + '</ul>' : ''}</div>`).join('');
   if (CONFIG.BUKU_URL){ $('bukuBox').classList.remove('hidden'); $('bukuLink').href = CONFIG.BUKU_URL; }
   $('pelanBox').innerHTML = CONFIG.PELAN_URL
-    ? `<img src="${esc(CONFIG.PELAN_URL)}" alt="Pelan tempat duduk" style="max-width:100%;border-radius:16px">`
+    ? `<h3 style="font-size:1.5rem;margin-bottom:12px">Pelan Susun Atur Dewan</h3>
+       <div class="legend">${(CONFIG.PETUNJUK_MEJA || []).map(([k, v, c]) => `<div><i style="background:${c}"></i><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('')}</div>
+       <a href="${esc(CONFIG.PELAN_URL)}" target="_blank" rel="noopener"><img src="${esc(CONFIG.PELAN_URL)}" alt="Pelan susun atur dewan" style="width:100%;border-radius:16px;margin-top:14px" loading="lazy"></a>
+       <p class="note" style="margin-top:8px">Tekan gambar untuk besarkan.</p>`
     : '<p class="note">Pelan tempat duduk akan dimuat naik tidak lama lagi.</p>';
   // Kalungan bunga di sekeliling lambang
   let w = '';
