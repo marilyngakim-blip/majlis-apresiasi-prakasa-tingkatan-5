@@ -611,8 +611,10 @@ let currentQR = null;
 /* ===================== UTIL ===================== */
 function $(id){ return document.getElementById(id); }
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function ssGet(k){ try { return sessionStorage.getItem(k); } catch(e){ return null; } }
-function ssSet(k,v){ try { v ? sessionStorage.setItem(k,v) : sessionStorage.removeItem(k); } catch(e){} }
+// Log masuk admin disimpan dalam peranti (localStorage) supaya kekal walaupun tab / pelayar ditutup.
+// Hanya log keluar bila AJK tekan "Log Keluar" atau kata laluan ditukar.
+function ssGet(k){ try { return localStorage.getItem(k) || sessionStorage.getItem(k); } catch(e){ return null; } }
+function ssSet(k,v){ try { v ? localStorage.setItem(k,v) : localStorage.removeItem(k); sessionStorage.removeItem(k); } catch(e){} }
 function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.remove('hidden'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.add('hidden'),3200); }
 function openModal(id){ $(id).classList.remove('hidden'); document.body.style.overflow='hidden'; }
 function closeModal(id){ $(id).classList.add('hidden'); document.body.style.overflow=''; }
